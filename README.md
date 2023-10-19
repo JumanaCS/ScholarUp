@@ -1,4 +1,4 @@
-# ACE
+# ACE:
 Mobile Application Project - Study Application 
 
 ACE is our study app created for Mobile Applications Development in Fall 2023 and presented at InnovateUNO.
@@ -10,7 +10,7 @@ Languages: React-Native, JavaScript,
 
 In Progress!
 
-# ACE
+# Team Members:
 - Jumana Suleiman 
 - Jenny Spicer
 - Kailey Bergeron 
