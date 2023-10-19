@@ -11,6 +11,6 @@ Languages: React-Native, JavaScript,
 In Progress!
 
 # ACE
-Jumana Suleiman 
-Jenny Spicer
-Kailey Bergeron 
+- Jumana Suleiman 
+- Jenny Spicer
+- Kailey Bergeron 
