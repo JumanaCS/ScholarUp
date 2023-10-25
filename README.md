@@ -10,7 +10,7 @@ Languages: React-Native, JavaScript,
 
 In Progress!
 
-All Screens and UI designs made by me: https://github.com/JumanaCS/MY-ART/tree/main/ScholarUp
+All Screens and UI designs made by me: [Designs](https://github.com/JumanaCS/MY-ART/tree/main/ScholarUp)
 
 # Team Members:
 - Jumana Suleiman 
