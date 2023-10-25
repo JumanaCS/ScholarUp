@@ -10,6 +10,8 @@ Languages: React-Native, JavaScript,
 
 In Progress!
 
+All Screens and UI designs made by me: https://github.com/JumanaCS/MY-ART/tree/main/ScholarUp
+
 # Team Members:
 - Jumana Suleiman 
 - Jenny Spicer
