@@ -7,7 +7,7 @@ ScholarUp is a combination of studying, planning, and _friendly_ competition. Sc
 
 ## :woman_student: Meet the Creators:
 ### Jumana Suleiman
-A Junior in Computer Science intrested in Mobile Application Development and Software Engineering. I use planners and calenders to keep track of what I need done, so it will be very intresting to see the process of creating an app like this! You can contact me through: [LinkedIn](https://www.linkedin.com/in/jumana-sul) or [Email](jumana.suleiman.cs@gmail.com).
+A Junior in Computer Science interested in Mobile Application Development and Software Engineering. I use planners and calendars to keep track of what I need done, so it will be very interesting to see the process of creating an app like this! You can contact me through: [LinkedIn](https://www.linkedin.com/in/jumana-sul) or [Email](jumana.suleiman.cs@gmail.com). Original Prototype UI designed by me: [ScholarUp Prototype](https://github.com/JumanaCS/MY-ART/tree/main/ScholarUp).
 
 ### Jenny Spicer
 A senior in the general Computer Science concentration with a huge interest in Software Engineering. I regularly use study/productivity apps, so I am thrilled to be working on one with my team. You can contact me through [LinkedIn](https://www.linkedin.com/in/jenspi/) or take a stroll through my [GitHub](https://github.com/Jenspi).
