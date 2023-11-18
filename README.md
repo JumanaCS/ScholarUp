@@ -1,3 +1,5 @@
+<img width="671" alt="Screenshot 2023-11-17 at 9 56 31 PM" src="https://github.com/JumanaCS/ScholarUp/assets/148403239/088c1e9c-950f-4ed7-aaff-f32e62a8e37c">
+
 # ScholarUp:
 # :green_apple: About ScholarUp
 ScholarUp is our study app created for Mobile Applications Development in Fall 2023 and presented at InnovateUNO.
