@@ -1,4 +1,4 @@
-<img width="671" alt="Screenshot 2023-11-17 at 9 56 31 PM" src="https://github.com/JumanaCS/ScholarUp/assets/148403239/088c1e9c-950f-4ed7-aaff-f32e62a8e37c">
+<img width="1010" alt="Screenshot 2023-11-17 at 9 57 28 PM" src="https://github.com/JumanaCS/ScholarUp/assets/148403239/9fa5754c-7c32-402c-8e6a-1187f4ad951f">
 
 # ScholarUp:
 # :green_apple: About ScholarUp
