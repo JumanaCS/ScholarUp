@@ -3,8 +3,6 @@
 # :green_apple: About ScholarUp
 ScholarUp is our study app created for our Mobile Applications Development course in Fall 2023; presented at InnovateUNO (2023) and the Annual ULS Academic Summit (2024).
 
-ScholarUp is a combination of studying, planning, and _friendly_ competition. ScholarUp uses XP from creating flashcards, studying, or mastering a concept to determine where a user would fall on a leaderboard. We implement daily challenges and achievements for those who enjoy the passive challenge.
-
 ## :pencil: Meet the Creators:
 ### Jumana Suleiman
 A senior in Computer Science interested in Mobile Application Development and Software Engineering. I use planners and calendars to keep track of what I need done, so it will be very interesting to see the process of creating an app like this! You can reach me: [LinkedIn](https://www.linkedin.com/in/jumana-sul).
