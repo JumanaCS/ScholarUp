@@ -5,7 +5,7 @@ ScholarUp is our study app created for our Mobile Applications Development cours
 
 ## :pencil: Meet the Creators:
 ### Jumana Suleiman
-A senior in Computer Science interested in Web and Mobile Application Development, Software Engineering, and leadership. I use planners and calendars to keep track of what I need done, so it will be very interesting to see the process of creating an app like this! You can reach me: [LinkedIn](https://www.linkedin.com/in/jumana-sul).
+A senior in Computer Science interested in Web and Mobile Application Development, Software Engineering, UI/UX Design and leadership. I use planners and calendars to keep track of what I need done, so it will be very interesting to see the process of creating an app like this! You can reach me: [LinkedIn](https://www.linkedin.com/in/jumana-sul).
 UI designed by me: [ScholarUp Prototype](https://github.com/JumanaCS/MY-ART/tree/main/ScholarUp) and [ScholarUp Slides](https://docs.google.com/presentation/d/17w2G4pYsliUlZ8SEmiXdHXObV6MG3XdAndcf3I_jJzw/edit?usp=sharing).
 
 ### Kailey Bergeron
