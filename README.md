@@ -1,9 +1,11 @@
 ![IMG_2009](https://github.com/user-attachments/assets/ab84e5f4-a217-418c-ba19-eb7c15bfebc0)
 
-# :green_apple: About ScholarUp ✩₊˚
+# :green_apple: About ScholarUp 
 ScholarUp is our study app created for our Mobile Applications Development course in Fall 2023; presented at InnovateUNO (2023) and the Annual ULS Academic Summit (2024).
 
 ScholarUp is a combination of studying, planning, and _friendly_ competition. ScholarUp uses XP from creating flashcards, studying, or mastering a concept to determine where a user would fall on a leaderboard. We implement daily challenges and achievements for those who enjoy the passive challenge.
+
+# 📦 Screenshots 
 
 ## :trophy: InnovateUNO 
 ScholarUp was presented on November 14th, 2023 at UNO’s annual research symposium, _InnovateUNO_. See our [abstract](https://www.uno.edu/innovateuno/abstracts#comp).
