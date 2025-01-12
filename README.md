@@ -32,7 +32,7 @@ ScholarUp is a combination of studying, planning, and _friendly_ competition. Sc
  <be> 
 
 ## :trophy: InnovateUNO 
-ScholarUp was presented on November 14th, 2023 at UNO’s annual research symposium, _InnovateUNO_. See our [abstract](https://www.uno.edu/innovateuno/abstracts#comp).
+ScholarUp was presented on November 14th, 2023 at UNO’s annual research symposium, _InnovateUNO_. See the [abstract](https://www.uno.edu/innovateuno/abstracts#comp).
 <!-- See a [video of the presentation]()! -->
 It placed **First Place** out of 100 other UNO students and faculty, winning $200 and an invitation to present at the ULS Annual Academic Summit.
 
