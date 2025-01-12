@@ -32,5 +32,5 @@ ScholarUp was presented on November 14th, 2023 at UNO’s annual research sympos
 <!-- See a [video of the presentation]()! -->
 It placed **First Place** out of 100 other UNO students and faculty, winning $200 and an invitation to present at the ULS Annual Academic Summit.
 
-## :microphone: ULS Academic Summit 2024
+## :microphone: ULS Academic Summit 2024 
 ScholarUp was presented at Louisiana Tech University on April 11-12, 2024 for the University of Louisiana System Academic Summit. The summit included students and faculty from all nine ULS universities.
