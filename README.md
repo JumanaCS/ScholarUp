@@ -2,7 +2,7 @@
 ScholarUp is a study app that combines studying, planning, and aesthetics. It holds all the features you need to study consistently and successfully, while also having a cute and consistent color scheme.   
 
 ## 📗 Features
-• **Flashcards:** Easily create new flashcard stacks, add items to the stack, practice the cards, and star the ones you know.<br>
+• **Flashcards:** Create new flashcard stacks, add items to it, practice the cards, and star what you know.<br>
 • **To Do Lists:** Create To Do lists, add items to the lists, and check off the ones you completed.<br>
 • **Study Timer:** Time how long it takes you to study as well as have a set break.<br>
 
