@@ -5,6 +5,11 @@ ScholarUp is our study app created for our Mobile Applications Development cours
 
 ScholarUp is a combination of studying, planning, and _friendly_ competition. ScholarUp uses XP from creating flashcards, studying, or mastering a concept to determine where a user would fall on a leaderboard. We implement daily challenges and achievements for those who enjoy the passive challenge.
 
+## 📗 Features
+• Flashcards <br>
+• To Do Lists <br>
+• Study Timer <br>
+
 # 📦 Screenshots 
  <div>
     <img style = "width: 20vh; margin: 5vh;" src = "Images/signin.PNG">
@@ -24,7 +29,7 @@ ScholarUp is a combination of studying, planning, and _friendly_ competition. Sc
 <img style = "width: 20vh; margin: 5vh;" src = "Images/timer.PNG">
 <img style = "width: 20vh; margin: 5vh;" src = "Images/home.PNG">
 </div>
- <br>
+ <be> 
 
 ## :trophy: InnovateUNO 
 ScholarUp was presented on November 14th, 2023 at UNO’s annual research symposium, _InnovateUNO_. See our [abstract](https://www.uno.edu/innovateuno/abstracts#comp).
