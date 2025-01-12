@@ -7,9 +7,9 @@ ScholarUp is a combination of studying, planning, and _friendly_ competition. Sc
 
 # 📦 Screenshots 
  <div>
-    <img style = "width: 20vh; margin: 5vh;" src = "Images/signin.png">
-    <img style = "width: 20vh; margin: 5vh;" src = "resources/thumbnails/signupPage.png">
-    <img style = "width: 20vh; margin: 5vh;" src = "resources/thumbnails/home.png">
+    <img style = "width: 20vh; margin: 5vh;" src = "Images/signin.PNG">
+    <img style = "width: 20vh; margin: 5vh;" src = "Images/signup.PNG">
+    <img style = "width: 20vh; margin: 5vh;" src = "Images/flashcard1.PNG">
     <img style = "width: 20vh; margin: 5vh;" src = "resources/thumbnails/addNewItem.png">
     <img style = "width: 20vh; margin: 5vh;" src = "resources/thumbnails/editItem.png">
 </div>
