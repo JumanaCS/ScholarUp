@@ -6,9 +6,9 @@ ScholarUp is our study app created for our Mobile Applications Development cours
 ScholarUp is a combination of studying, planning, and _friendly_ competition. ScholarUp uses XP from creating flashcards, studying, or mastering a concept to determine where a user would fall on a leaderboard. We implement daily challenges and achievements for those who enjoy the passive challenge.
 
 ## 📗 Features
-• Flashcards <br>
-• To Do Lists <br>
-• Study Timer <br>
+• **Flashcards:** Easily create new flashcard stacks, add items to the stack, practice the cards, and star the ones you know.<br>
+• **To Do Lists:** Create To Do lists, add items to the lists, and check off the ones you completed.<br>
+• **Study Timer:** Time how long it takes you to study as well as have a set break.<br>
 
 # 📦 Screenshots 
  <div>
