@@ -11,9 +11,6 @@ ScholarUp is a combination of studying, planning, and _friendly_ competition. Sc
  <div>
     <img style = "width: 20vh; margin: 5vh;!(https://github.com/user-attachments/assets/d25144d3-a6b2-4ce8-a359-1866d7bf70e6)>
 </div>
- <br>
-
-
 
 ## :trophy: InnovateUNO 
 ScholarUp was presented on November 14th, 2023 at UNO’s annual research symposium, _InnovateUNO_. See our [abstract](https://www.uno.edu/innovateuno/abstracts#comp).
