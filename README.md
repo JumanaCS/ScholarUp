@@ -18,6 +18,11 @@ ScholarUp is a combination of studying, planning, and _friendly_ competition. Sc
 <div>
 <img style = "width: 20vh; margin: 5vh;" src = "Images/list1.PNG">
 <img style = "width: 20vh; margin: 5vh;" src = "Images/list2.PNG">
+<img style = "width: 20vh; margin: 5vh;" src = "Images/list3.PNG">
+</div>
+<div>
+<img style = "width: 20vh; margin: 5vh;" src = "Images/timer.PNG">
+<img style = "width: 20vh; margin: 5vh;" src = "Images/home.PNG">
 </div>
  <br>
 
