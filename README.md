@@ -9,12 +9,7 @@ ScholarUp is a combination of studying, planning, and _friendly_ competition. Sc
 ### ☆ ──── Screenshots ──── ☆
 
  <div>
-    <img style = "width: 20vh; margin: 5vh;![IMG_1758](https://github.com/user-attachments/assets/d25144d3-a6b2-4ce8-a359-1866d7bf70e6)>
-
-    <img style = "width: 20vh; margin: 5vh;" src = "resources/thumbnails/signupPage.png">
-    <img style = "width: 20vh; margin: 5vh;" src = "resources/thumbnails/home.png">
-    <img style = "width: 20vh; margin: 5vh;" src = "resources/thumbnails/addNewItem.png">
-    <img style = "width: 20vh; margin: 5vh;" src = "resources/thumbnails/editItem.png">
+    <img style = "width: 20vh; margin: 5vh;!(https://github.com/user-attachments/assets/d25144d3-a6b2-4ce8-a359-1866d7bf70e6)>
 </div>
  <br>
 
