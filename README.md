@@ -1,5 +1,3 @@
-![IMG_2009](https://github.com/user-attachments/assets/ab84e5f4-a217-418c-ba19-eb7c15bfebc0)
-
 # :green_apple: About ScholarUp 
 ScholarUp is a study app that combines studying, planning, and aesthetics. It holds all the features you need to study consistently and successfully, while also having a cute and consistent color scheme.   
 
