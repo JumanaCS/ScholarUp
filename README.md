@@ -1,9 +1,7 @@
 ![IMG_2009](https://github.com/user-attachments/assets/ab84e5f4-a217-418c-ba19-eb7c15bfebc0)
 
 # :green_apple: About ScholarUp 
-ScholarUp is our study app created for our Mobile Applications Development course in Fall 2023; presented at InnovateUNO (2023) and the Annual ULS Academic Summit (2024).
-
-ScholarUp is a combination of studying, planning, and _friendly_ competition. ScholarUp uses XP from creating flashcards, studying, or mastering a concept to determine where a user would fall on a leaderboard. We implement daily challenges and achievements for those who enjoy the passive challenge.
+ScholarUp is a study app that combines studying, planning, and aesthetics. It holds all the features you need to study consistently and successfully, while also having a cute and consistent color scheme.   
 
 ## 📗 Features
 • **Flashcards:** Easily create new flashcard stacks, add items to the stack, practice the cards, and star the ones you know.<br>
