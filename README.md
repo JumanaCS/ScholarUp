@@ -11,16 +11,22 @@ ScholarUp is a study app that combines studying, planning, and aesthetics. It ho
     <img style = "width: 20vh; margin: 5vh;" src = "Images/signin.PNG">
     <img style = "width: 20vh; margin: 5vh;" src = "Images/signup.PNG">
 </div>
+
+ ## Flash Card Screens
 <div>
 <img style = "width: 20vh; margin: 5vh;" src = "Images/flashcard1.PNG">
 <img style = "width: 20vh; margin: 5vh;" src = "Images/flashcard2.PNG">
 <img style = "width: 20vh; margin: 5vh;" src = "Images/flashcard3.PNG">
 </div>
+
+## To Do List Screens
 <div>
 <img style = "width: 20vh; margin: 5vh;" src = "Images/list1.PNG">
 <img style = "width: 20vh; margin: 5vh;" src = "Images/list2.PNG">
 <img style = "width: 20vh; margin: 5vh;" src = "Images/ilst3.PNG">
 </div>
+
+## Study Timer and Home Page Screen
 <div>
 <img style = "width: 20vh; margin: 5vh;" src = "Images/timer.PNG">
 <img style = "width: 20vh; margin: 5vh;" src = "Images/home.PNG">
