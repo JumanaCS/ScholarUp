@@ -34,9 +34,9 @@ ScholarUp is a study app that combines studying, planning, and aesthetics. It ho
  <br> 
 
 ## :trophy: InnovateUNO 
-ScholarUp was presented by Jumana and Kailey on November 14th, 2023 at UNO’s annual research symposium, _InnovateUNO_. See the [abstract](https://www.uno.edu/innovateuno/abstracts#comp).
+ScholarUp was presented by Jumana and Kailey on November 14th, 2023 at UNO’s annual research symposium, _InnovateUNO_. 
 <!-- See a [video of the presentation]()! -->
-It placed **First Place** out of 100 other UNO students and faculty, winning $200 and an invitation to present at the ULS Annual Academic Summit.
+It placed **First Place** out of 100 other UNO students and faculty, winning $200 and an invitation to present at the ULS Annual Academic Summit. [Winners Page](https://www.uno.edu/innovateuno/winners#:~:text=Fall%202023-,Undergraduate,-Students)
 
 ## :microphone: ULS Academic Summit 2024 
 ScholarUp was presented by Jumana at Louisiana Tech University on April 11-12, 2024 for the University of Louisiana System Academic Summit. The summit included students and faculty from all nine ULS universities.
