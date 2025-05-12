@@ -6,7 +6,7 @@ ScholarUp is a study app that combines studying, planning, and aesthetics. It ho
 • **To Do Lists:** Create To Do lists, add items to the lists, and check off the ones you completed.<br>
 • **Study Timer:** Time how long it takes you to study as well as have a set break.<br>
 
-# 📦 Screenshots 
+# 📦 Screenshots  
  <div>
     <img style = "width: 20vh; margin: 5vh;" src = "Images/signin.PNG">
     <img style = "width: 20vh; margin: 5vh;" src = "Images/signup.PNG">
