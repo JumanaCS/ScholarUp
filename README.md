@@ -35,8 +35,7 @@ ScholarUp is a study app that combines studying, planning, and aesthetics. It ho
 
 ## Documentation 
  - [Stakeholder Questions](https://docs.google.com/document/d/1bmIvVFVsvj_rH24AcGEtTHQtaLRsC4KWJOjmSu54Rr4/edit?usp=sharing)
- - [Presentation Slides](https://docs.google.com/presentation/d/17w2G4pYsliUlZ8SEmiXdHXObV6MG3XdAndcf3I_jJzw/edit?usp=sharing)
- - 
+ - [Presentation Slides](https://docs.google.com/presentation/d/17w2G4pYsliUlZ8SEmiXdHXObV6MG3XdAndcf3I_jJzw/edit?usp=sharing) 
 
 ## :trophy: InnovateUNO Fall 2023
 ScholarUp was presented by Jumana and Kailey on November 14th, 2023 at UNO’s annual research symposium, _InnovateUNO_. 
