@@ -1,5 +1,5 @@
 # :green_apple: About ScholarUp 
-ScholarUp is a study app that combines studying, planning, and aesthetics. It holds all the features you need to study consistently and successfully, while also having a cute and consistent color scheme.   
+ScholarUp is a study app that combines studying, planning, and aesthetics. It holds all the features you need to study consistently and successfully, while also having a cute and consistent color scheme.    
 
 ## 📗 Features
 • **Flashcards:** Create new flashcard stacks, add items to it, practice the cards, and star what you know.<br>
