@@ -154,6 +154,8 @@ It placed **First Place** out of 100 other UNO students and faculty, winning $20
    
 <img width="691" alt="Screenshot 2025-05-22 at 7 36 54 AM" src="https://github.com/user-attachments/assets/34396bab-3b71-439b-8d53-2be39ef9c51e" />
 
+# Handmade Charms Made for the Audience 
+<img width="1184" alt="Screenshot 2025-05-23 at 6 43 35 PM" src="https://github.com/user-attachments/assets/357354c3-7d14-427d-a63f-a17e7a59e268" />
 
 ## :microphone: ULS Academic Summit 2024 
 ScholarUp was presented by Jumana at Louisiana Tech University on April 11-12, 2024 for the University of Louisiana System Academic Summit. The summit included students and faculty from all nine ULS universities.
