@@ -141,10 +141,6 @@ ScholarUp stands out by merging multiple study tools into one cohesive experienc
 - Study Buddy System
 - Messaging & Stories
 
-### ✅ Accessibility & Customization
-- Multilingual Support
-- Custom Themes (pre-made & user-uploaded)
-
 ### Impact & Future Improvements
 - **Positive Feedback:** Users loved the all-in-one approach.
 - **Areas for Improvement:** Expand study analytics (ex. time spent per subject).
