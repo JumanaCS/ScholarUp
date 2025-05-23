@@ -138,8 +138,6 @@ ScholarUp stands out by merging multiple study tools into one cohesive experienc
 
 ### ✅ Social & Gamification
 - Leaderboards (opt-out available)
-- Study Buddy System
-- Messaging & Stories
 
 ### Impact & Future Improvements
 - **Positive Feedback:** Users loved the all-in-one approach.
