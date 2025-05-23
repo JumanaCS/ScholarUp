@@ -118,7 +118,7 @@ ScholarUp stands out by merging multiple study tools into one cohesive experienc
 ### Key Takeaways from Testing
 - Users struggled with icon-based navigation → **Switched to text labels**.
 - Task visibility was unclear → **Improved calendar UI**.
-- Users loved the color scheme and doodle feature.
+- Users loved the color scheme.
 - We also observed that students doodle on the white boards, concluding that we also need a doodle feature.
   
 <img width="407" alt="Screenshot 2025-05-22 at 7 39 44 AM" src="https://github.com/user-attachments/assets/6f803629-a028-440f-ada8-ba2699ad19b9" />
