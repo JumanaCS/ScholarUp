@@ -141,7 +141,7 @@ ScholarUp stands out by merging multiple study tools into one cohesive experienc
 
 ### Impact & Future Improvements
 - **Positive Feedback:** Users loved the all-in-one approach.
-- **Areas for Improvement:** Expand study analytics (ex. time spent per subject).
+- **Areas for Improvement:** Stats addition, Leaderboard addition, Test Maker addition. 
 
 ### Conclusion
 ScholarUp successfully merges planning, studying, and motivation into a single app, addressing key pain points for students. Through iterative testing and stakeholder feedback, the app evolved into a user-friendly, feature-rich tool that enhances study habits while reducing stress.
