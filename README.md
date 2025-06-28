@@ -1,3 +1,4 @@
+![366261746-ab84e5f4-a217-418c-ba19-eb7c15bfebc0](https://github.com/user-attachments/assets/1dc1dff7-0255-485c-ac7b-71bf51b6dbc7)
 # :green_apple: About ScholarUp + Case Study  
 ScholarUp is a study app that combines studying, planning, and aesthetics. It holds all the features you need to study consistently and successfully, while also having a cute and consistent color scheme.    
 
