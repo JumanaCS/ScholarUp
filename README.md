@@ -13,26 +13,60 @@ ScholarUp is a study app that combines studying, planning, and aesthetics. It ho
     <img style = "width: 20vh; margin: 5vh;" src = "Images/SignUp.GIF">
 </div>
 
- ## Flash Card Screens
+ ## <img src="Images/FlashCards.png" width="40" align="center" /> Flash Card Screens
+ ### Creating sets & cards
 <div>
-<img style = "width: 20vh; margin: 5vh;" src = "Images/flashcard1.PNG">
-<img style = "width: 20vh; margin: 5vh;" src = "Images/flashcard2.PNG">
-<img style = "width: 20vh; margin: 5vh;" src = "Images/flashcard3.PNG">
+<img style = "width: 20vh; margin: 5vh;" src = "Images/Flash1.png">
+<img style = "width: 20vh; margin: 5vh;" src = "Images/Flash2.png">
+<img style = "width: 20vh; margin: 5vh;" src = "Images/Flash3.png">
+<img style = "width: 20vh; margin: 5vh;" src = "Images/Flash4.png">
 </div>
 
-## To Do List Screens
+### Taking a quiz
 <div>
-<img style = "width: 20vh; margin: 5vh;" src = "Images/list1.PNG">
-<img style = "width: 20vh; margin: 5vh;" src = "Images/list2.PNG">
-<img style = "width: 20vh; margin: 5vh;" src = "Images/ilst3.PNG">
+<img style = "width: 20vh; margin: 5vh;" src = "Images/Flash5.png">
+<img style = "width: 20vh; margin: 5vh;" src = "Images/Flash6.png">
+<img style = "width: 20vh; margin: 5vh;" src = "Images/Flash7.png">
 </div>
 
-## Study Timer and Home Page Screen
+## <img src="Images/Lists.png" width="40" align="center" /> To Do List Screens
+### Creating lists & tasks 
 <div>
-<img style = "width: 20vh; margin: 5vh;" src = "Images/timer.PNG">
-<img style = "width: 20vh; margin: 5vh;" src = "Images/home.PNG">
+<img style = "width: 20vh; margin: 5vh;" src = "Images/List1.png">
+<img style = "width: 20vh; margin: 5vh;" src = "Images/List2.png">
+<img style = "width: 20vh; margin: 5vh;" src = "Images/List3.png">
+<img style = "width: 20vh; margin: 5vh;" src = "Images/List4.png">
+<img style = "width: 20vh; margin: 5vh;" src = "Images/List5.png">
 </div>
- <br> 
+
+### Homescreen task display
+<div>
+<img style = "width: 20vh; margin: 5vh;" src = "Images/List6.png">
+<img style = "width: 20vh; margin: 5vh;" src = "Images/List7.png">
+</div>
+
+## <img src="Images/Timer.png" width="40" align="center" /> Study Timer 
+### Default state & Focus
+<div>
+<img style = "width: 20vh; margin: 5vh;" src = "Images/Timer1.png">
+<img style = "width: 20vh; margin: 5vh;" src = "Images/Timer2.png">
+<img style = "width: 20vh; margin: 5vh;" src = "Images/Timer3.png">
+</div>
+
+### Break & Draw
+<div>
+<img style = "width: 20vh; margin: 5vh;" src = "Images/Timer4.png">
+<img style = "width: 20vh; margin: 5vh;" src = "Images/Timer5.png">
+<img style = "width: 20vh; margin: 5vh;" src = "Images/Timer6.png">
+</div>
+ 
+## <img src="Images/Stats2.png" width="40" align="center" /> Statistics, Gallery, & Settings  
+<div>
+<img style = "width: 20vh; margin: 5vh;" src = "Images/Stats.png">
+<img style = "width: 20vh; margin: 5vh;" src = "Images/Gallery.png">
+<img style = "width: 20vh; margin: 5vh;" src = "Images/Settings.png">
+</div>
+<br> 
 
  ## App Icon
 <img src="https://github.com/user-attachments/assets/7a676a7e-3e27-4ffa-b571-58889cafa3cd" data-canonical-src="https://github.com/user-attachments/assets/7a676a7e-3e27-4ffa-b571-58889cafa3cd" width="200" />
