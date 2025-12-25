@@ -35,7 +35,6 @@ ScholarUp is a study app that combines studying, planning, and aesthetics. It ho
 <img style = "width: 20vh; margin: 5vh;" src = "Images/List1.png">
 <img style = "width: 20vh; margin: 5vh;" src = "Images/List2.png">
 <img style = "width: 20vh; margin: 5vh;" src = "Images/List3.png">
-<img style = "width: 20vh; margin: 5vh;" src = "Images/List4.png">
 <img style = "width: 20vh; margin: 5vh;" src = "Images/List5.png">
 </div>
 
