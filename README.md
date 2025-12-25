@@ -9,8 +9,8 @@ ScholarUp is a study app that combines studying, planning, and aesthetics. It ho
 
 # 📦 Screenshots   
  <div>
-    <img style = "width: 20vh; margin: 5vh;" src = "Images/signin.PNG">
-    <img style = "width: 20vh; margin: 5vh;" src = "Images/signup.PNG">
+    <img style = "width: 20vh; margin: 5vh;" src = "Images/SignIn.GIF">
+    <img style = "width: 20vh; margin: 5vh;" src = "Images/SignUp.GIF">
 </div>
 
  ## Flash Card Screens
