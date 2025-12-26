@@ -227,7 +227,7 @@ src/
 ## Database Schema
 
 ### Entity Relationship Diagram
-<img width="2176" height="1496" alt="supabase-schema-mlybrnxzdzlifdssdpln (1)" src="https://github.com/user-attachments/assets/ba58c3ed-3554-400b-a809-6d011ee4849d" />
+<img width="2176" height="1496" alt="supabase-schema-mlybrnxzdzlifdssdpln (1)" src="https://github.com/user-attachments/assets/55698b2e-b01b-4689-aa32-d8830e106df4" />
 
 ### Security Model
 
