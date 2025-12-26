@@ -224,31 +224,6 @@ src/
 └── utils/            # Helper functions
 ```
 
-### Key Technical Features
-
-#### Authentication Flow
-- Supabase Auth with email/password
-- Apple Sign-In integration via Expo
-- Persistent sessions with AsyncStorage
-- Secure token refresh
-
-#### State Management
-- React Context for global state
-- Optimistic UI updates
-- Background sync with Supabase
-- Offline-capable architecture
-
-#### UI/UX Highlights
-- Custom "Mini" font throughout
-- Responsive design (phone + tablet)
-- Keyboard-aware inputs
-
-#### Image Handling
-- Image picker for flashcards
-- Canvas drawing for break doodles
-- Supabase Storage with user folders
-- Automatic image compression
-
 ## Database Schema
 
 ### Entity Relationship Diagram
