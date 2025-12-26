@@ -2,12 +2,13 @@
 # :green_apple: About ScholarUp + Case Study  
 ScholarUp is a study app that combines studying, planning, and aesthetics. It holds all the features you need to study consistently and successfully, while also having a cute and consistent color scheme.    
 
-## 📗 Features
+## Features
 • **Flashcards:** Create new flashcard stacks, add items to it, practice the cards, and star what you know.<br>
 • **To Do Lists:** Create To Do lists, add items to the lists, and check off the ones you completed.<br>
 • **Study Timer:** Time how long it takes you to study as well as have a set break.<br>
 
-# 📦 Screenshots   
+# Screenshots   
+## 📗 Sign In and Sign Up 
  <div>
     <img style = "width: 20vh; margin: 5vh;" src = "Images/SignIn.GIF">
     <img style = "width: 20vh; margin: 5vh;" src = "Images/SignUp.GIF">
