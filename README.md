@@ -249,24 +249,28 @@ This ensures:
 ---
 ## Roadmap & Future Updates
 
-### Version 1.1 (Planned)
-- [ ] Push notifications for task reminders
-- [ ] Widget support for home screen
-- [ ] Dark mode theme option
-- [ ] Export flashcards to PDF
+### Version 1.0.0 (Planned) - Feb. 2025 Release  
+- [x] one time $3.99 premium features payment model
+- [ ] Timer sound alert
+- [ ] Export Data (flashcards, stats)
+- [ ] Eraser in doodle pop up
 
-### Version 1.2 (Planned)
-- [ ] Study streak tracking
-- [ ] Weekly/monthly study reports
-- [ ] Spaced repetition algorithm for flashcards
+### Version 1.2.0 (Planned)
+- [ ] Flashcards & Lists search bar
+- [ ] Recurring Tasks (daily, weekly, monthly)
+- [ ] Spaced repetition algorithm for flashcards (anki method)
 - [ ] Import flashcards from Quizlet
 
-### Version 2.0 (Future)
-- [ ] Social features (study groups)
-- [ ] Leaderboards (opt-in)
-- [ ] AI-powered quiz generation
-- [ ] Note-taking with stylus support
-- [ ] Pomodoro session sharing
+### Version 1.3.0 (Planned)
+- [ ] Web Version
+
+### Version 2.0.0 (Future)
+- [ ] Pomodoro session enhancements (add tasks to your focus session)
+- [ ] Push notifications for task reminders
+- [ ] Widget support for home screen
+- [ ] Study streak tracking
+- [ ] Badges (100 flashcards learned, etc.)
+- [ ] Color theme picker intead of a green color scheme
 
 ## Feature Requests
 Have an idea? [Open an issue](https://github.com/JumanaCS/ScholarUp/issues) with the `enhancement` label!
@@ -297,7 +301,7 @@ ScholarUp was presented at Louisiana Tech University on April 11-12, 2024 for th
 
 | Version | Date | Highlights |
 |---------|------|------------|
-| **1.0.0** | Dec 2025 | Initial public release |
+| **BETA** | Dec 2025 | Initial public release |
 | | | Flashcards with images & quiz mode |
 | | | To-do lists with due dates |
 | | | Focus timer with doodle breaks |
