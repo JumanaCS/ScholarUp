@@ -250,10 +250,10 @@ This ensures:
 ## Roadmap & Future Updates
 
 ### Version 1.0.0 (Planned) - Feb. 2025 Release  
-- [x] one time $3.99 premium features payment model
+- [ ] one time $3.99 premium features payment model
 - [ ] Timer sound alert
 - [ ] Export Data (flashcards, stats)
-- [ ] Eraser in doodle pop up
+- [x] Eraser in doodle pop up
 
 ### Version 1.2.0 (Planned)
 - [ ] Flashcards & Lists search bar
