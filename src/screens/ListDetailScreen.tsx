@@ -348,7 +348,7 @@ const styles = StyleSheet.create({
     fontSize: isTablet ? 36 : 28,
   },
   listTitle: {
-    fontFamily: 'Mini',
+    fontFamily: 'BPreplay-Bold',
     fontSize: isTablet ? 42 : 32,
     color: Colors.textDark,
   },
@@ -388,7 +388,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   taskText: {
-    fontFamily: 'Mini',
+    fontFamily: 'BPreplay-Bold',
     fontSize: isTablet ? 20 : 16,
     color: Colors.white,
     flex: 1,
@@ -474,7 +474,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     paddingVertical: 15,
     paddingHorizontal: 15,
-    fontFamily: 'Mini',
+    fontFamily: 'BPreplay-Bold',
     fontSize: isTablet ? 16 : 14,
     color: Colors.textDark,
     textAlign: 'center',

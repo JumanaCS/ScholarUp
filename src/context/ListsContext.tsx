@@ -3,6 +3,7 @@ import { useAuth } from './AuthContext';
 import {
   fetchTaskLists,
   createTaskList as dbCreateList,
+  updateTaskList as dbUpdateList,
   deleteTaskList as dbDeleteList,
   createTask as dbCreateTask,
   updateTask as dbUpdateTask,
@@ -44,6 +45,7 @@ interface ListsContextType {
   loading: boolean;
   refreshLists: () => Promise<void>;
   createList: (name: string, emoji?: string) => Promise<List | null>;
+  updateList: (listId: string, name: string, emoji: string) => Promise<void>;
   deleteList: (listId: string) => Promise<void>;
   addTask: (listId: string, text: string, dueDate?: string) => Promise<ListItem | null>;
   updateTask: (taskId: string, updates: { text?: string; completed?: boolean; dueDate?: string }) => Promise<void>;
@@ -106,6 +108,15 @@ export function ListsProvider({ children }: { children: ReactNode }) {
     } catch (error) {
       console.error('Error creating list:', error);
       return null;
+    }
+  };
+
+  const updateList = async (listId: string, name: string, emoji: string) => {
+    try {
+      await dbUpdateList(listId, name, emoji);
+      setLists(prev => prev.map(l => l.id === listId ? { ...l, name, emoji } : l));
+    } catch (error) {
+      console.error('Error updating list:', error);
     }
   };
 
@@ -188,6 +199,7 @@ export function ListsProvider({ children }: { children: ReactNode }) {
       loading,
       refreshLists,
       createList,
+      updateList,
       deleteList,
       addTask,
       updateTask: updateTaskFn,

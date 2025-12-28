@@ -302,16 +302,16 @@ function AppNavigator() {
         {user ? (
           // User is signed in - show main app
           <>
-            <Stack.Screen name="MainTabs" component={MainTabs} />
-            <Stack.Screen name="SetDetail" component={SetDetailScreen} />
-            <Stack.Screen name="Quiz" component={QuizScreen} />
-            <Stack.Screen name="ListDetail" component={ListDetailScreen} />
+            <Stack.Screen name="MainTabs" component={MainTabs} options={{ animation: 'none' }} />
+            <Stack.Screen name="SetDetail" component={SetDetailScreen} options={{ animation: 'none' }} />
+            <Stack.Screen name="Quiz" component={QuizScreen} options={{ animation: 'none' }} />
+            <Stack.Screen name="ListDetail" component={ListDetailScreen} options={{ animation: 'none' }} />
           </>
         ) : (
           // User is not signed in - show auth screens
           <>
-            <Stack.Screen name="SignUp" component={SignUpScreen} />
-            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="SignUp" component={SignUpScreen} options={{ animation: 'none' }} />
+            <Stack.Screen name="Login" component={LoginScreen} options={{ animation: 'none' }} />
           </>
         )}
       </Stack.Navigator>
@@ -324,6 +324,10 @@ function AppNavigator() {
 export default function App() {
   const [fontsLoaded] = useFonts({
     'Mini': require('./src/assets/fonts/mini.otf'),
+    'BPreplay': require('./src/assets/fonts/BPreplay/BPreplay.otf'),
+    'BPreplay-Bold': require('./src/assets/fonts/BPreplay/BPreplayBold.otf'),
+    'BPreplay-Italic': require('./src/assets/fonts/BPreplay/BPreplayItalics.otf'),
+    'BPreplay-BoldItalic': require('./src/assets/fonts/BPreplay/BPreplayBoldItalics.otf'),
   });
 
   if (!fontsLoaded) {

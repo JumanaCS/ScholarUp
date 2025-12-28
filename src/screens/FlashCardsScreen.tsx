@@ -9,20 +9,30 @@ import {
   ScrollView,
   Dimensions,
   ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  Image,
+  Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Colors } from '../constants';
 import { useFlashCards } from '../context';
+
+const whitePencil = require('../assets/images/White_pencil.png');
 
 const { width, height } = Dimensions.get('window');
 const isTablet = Math.min(width, height) >= 600;
 
 export default function FlashCardsScreen() {
   const navigation = useNavigation<any>();
-  const { sets, loading, createSet, refreshSets } = useFlashCards();
+  const { sets, loading, createSet, updateSet, deleteSet, refreshSets } = useFlashCards();
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingSet, setEditingSet] = useState<any>(null);
   const [newSetName, setNewSetName] = useState('');
   const [isCreating, setIsCreating] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const getSetStats = (set: any) => {
     const total = set.flashcards?.length || 0;
@@ -54,6 +64,49 @@ export default function FlashCardsScreen() {
     });
   };
 
+  const handleEditSet = (set: any) => {
+    setEditingSet(set);
+    setNewSetName(set.name);
+    setShowEditModal(true);
+  };
+
+  const handleUpdateSet = async () => {
+    if (editingSet && newSetName.trim()) {
+      setIsUpdating(true);
+      await updateSet(editingSet.id, newSetName.trim());
+      setIsUpdating(false);
+      resetEditModal();
+    }
+  };
+
+  const handleDeleteSet = () => {
+    if (editingSet) {
+      Alert.alert(
+        'Delete Set',
+        'Are you sure you want to delete this set? This action cannot be undone.',
+        [
+          { text: 'Cancel', style: 'cancel' },
+          {
+            text: 'Delete',
+            style: 'destructive',
+            onPress: async () => {
+              setIsDeleting(true);
+              await deleteSet(editingSet.id);
+              setIsDeleting(false);
+              resetEditModal();
+            },
+          },
+        ]
+      );
+    }
+  };
+
+  const resetEditModal = () => {
+    setShowEditModal(false);
+    setEditingSet(null);
+    setNewSetName('');
+  };
+
   const renderSetCard = (set: any) => {
     const { total, learned } = getSetStats(set);
 
@@ -64,7 +117,12 @@ export default function FlashCardsScreen() {
         activeOpacity={0.8}
         onPress={() => handleSetPress(set)}
       >
-        <Text style={styles.cardName}>{set.name}</Text>
+        <View style={styles.cardTop}>
+          <Text style={styles.cardName}>{set.name}</Text>
+          <TouchableOpacity onPress={() => handleEditSet(set)} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+            <Image source={whitePencil} style={styles.pencilIcon} resizeMode="contain" />
+          </TouchableOpacity>
+        </View>
         <Text style={styles.learnedText}>Cards: {total}</Text>
       </TouchableOpacity>
     );
@@ -109,46 +167,117 @@ export default function FlashCardsScreen() {
         animationType="fade"
         onRequestClose={() => setShowCreateModal(false)}
       >
-        <TouchableOpacity
-          style={styles.modalOverlay}
-          activeOpacity={1}
-          onPress={() => setShowCreateModal(false)}
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={styles.keyboardAvoidingView}
         >
           <TouchableOpacity
-            style={styles.modalContent}
+            style={styles.modalOverlay}
             activeOpacity={1}
-            onPress={() => {}}
+            onPress={() => setShowCreateModal(false)}
           >
             <TouchableOpacity
-              style={styles.closeButton}
-              onPress={() => setShowCreateModal(false)}
+              style={styles.modalContent}
+              activeOpacity={1}
+              onPress={() => {}}
             >
-              <Text style={styles.closeButtonText}>X</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.closeButton}
+                onPress={() => setShowCreateModal(false)}
+              >
+                <Text style={styles.closeButtonText}>X</Text>
+              </TouchableOpacity>
 
-            <Text style={styles.modalTitle}>create a set</Text>
+              <Text style={styles.modalTitle}>create a set</Text>
 
-            <TextInput
-              style={styles.input}
-              placeholder="create a name"
-              placeholderTextColor={Colors.textLight}
-              value={newSetName}
-              onChangeText={setNewSetName}
-            />
+              <TextInput
+                style={styles.input}
+                placeholder="create a name"
+                placeholderTextColor={Colors.textLight}
+                value={newSetName}
+                onChangeText={setNewSetName}
+              />
 
-            <TouchableOpacity
-              style={[styles.createButton, isCreating && styles.createButtonDisabled]}
-              onPress={handleCreateSet}
-              disabled={isCreating}
-            >
-              {isCreating ? (
-                <ActivityIndicator color={Colors.white} />
-              ) : (
-                <Text style={styles.createButtonText}>create</Text>
-              )}
+              <TouchableOpacity
+                style={[styles.createButton, isCreating && styles.createButtonDisabled]}
+                onPress={handleCreateSet}
+                disabled={isCreating}
+              >
+                {isCreating ? (
+                  <ActivityIndicator color={Colors.white} />
+                ) : (
+                  <Text style={styles.createButtonText}>create</Text>
+                )}
+              </TouchableOpacity>
             </TouchableOpacity>
           </TouchableOpacity>
-        </TouchableOpacity>
+        </KeyboardAvoidingView>
+      </Modal>
+
+      {/* Edit Set Modal */}
+      <Modal
+        visible={showEditModal}
+        transparent
+        animationType="fade"
+        onRequestClose={resetEditModal}
+      >
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={styles.keyboardAvoidingView}
+        >
+          <TouchableOpacity
+            style={styles.modalOverlay}
+            activeOpacity={1}
+            onPress={resetEditModal}
+          >
+            <TouchableOpacity
+              style={styles.modalContent}
+              activeOpacity={1}
+              onPress={() => {}}
+            >
+              <TouchableOpacity
+                style={styles.closeButton}
+                onPress={resetEditModal}
+              >
+                <Text style={styles.closeButtonText}>X</Text>
+              </TouchableOpacity>
+
+              <Text style={styles.modalTitle}>edit set</Text>
+
+              <TextInput
+                style={styles.input}
+                placeholder="set name"
+                placeholderTextColor={Colors.textLight}
+                value={newSetName}
+                onChangeText={setNewSetName}
+              />
+
+              <TouchableOpacity
+                style={[styles.createButton, isUpdating && styles.createButtonDisabled]}
+                onPress={handleUpdateSet}
+                disabled={isUpdating || isDeleting}
+              >
+                {isUpdating ? (
+                  <ActivityIndicator color={Colors.white} />
+                ) : (
+                  <Text style={styles.createButtonText}>save</Text>
+                )}
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[styles.deleteButton, isDeleting && styles.createButtonDisabled]}
+                onPress={handleDeleteSet}
+                disabled={isUpdating || isDeleting}
+              >
+                {isDeleting ? (
+                  <ActivityIndicator color={Colors.white} />
+                ) : (
+                  <Text style={styles.deleteButtonText}>delete set</Text>
+                )}
+              </TouchableOpacity>
+            </TouchableOpacity>
+          </TouchableOpacity>
+        </KeyboardAvoidingView>
       </Modal>
     </View>
   );
@@ -196,7 +325,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   cardName: {
-    fontFamily: 'Mini',
+    fontFamily: 'BPreplay-Bold',
     fontSize: isTablet ? 22 : 18,
     color: Colors.white,
     alignSelf: 'flex-start',
@@ -219,6 +348,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Mini',
     fontSize: isTablet ? 28 : 22,
     color: Colors.white,
+  },
+  keyboardAvoidingView: {
+    flex: 1,
   },
   modalOverlay: {
     flex: 1,
@@ -256,7 +388,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingVertical: 12,
     paddingHorizontal: 20,
-    fontFamily: 'Mini',
+    fontFamily: 'BPreplay-Bold',
     fontSize: isTablet ? 22 : 18,
     color: Colors.text,
     textAlign: 'center',
@@ -272,6 +404,27 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   createButtonText: {
+    fontFamily: 'Mini',
+    fontSize: isTablet ? 22 : 18,
+    color: Colors.white,
+  },
+  cardTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+  pencilIcon: {
+    width: isTablet ? 24 : 20,
+    height: isTablet ? 24 : 20,
+  },
+  deleteButton: {
+    backgroundColor: '#E88B8B',
+    paddingVertical: 12,
+    paddingHorizontal: 35,
+    borderRadius: 15,
+    marginTop: 15,
+  },
+  deleteButtonText: {
     fontFamily: 'Mini',
     fontSize: isTablet ? 22 : 18,
     color: Colors.white,

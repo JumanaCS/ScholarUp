@@ -14,10 +14,21 @@ export default function AuthNavigator() {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
+        animation: 'none',
+        animationDuration: 0,
+        gestureEnabled: false,
       }}
     >
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="SignUp" component={SignUpScreen} />
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{ animation: 'none' }}
+      />
+      <Stack.Screen
+        name="SignUp"
+        component={SignUpScreen}
+        options={{ animation: 'none' }}
+      />
     </Stack.Navigator>
   );
 }

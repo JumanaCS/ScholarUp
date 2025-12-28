@@ -177,3 +177,46 @@ ALTER TABLE user_stats
 ADD COLUMN IF NOT EXISTS default_focus_time INTEGER DEFAULT 1500,
 ADD COLUMN IF NOT EXISTS default_break_time INTEGER DEFAULT 300;
 ```
+
+---
+
+## RLS Policy Performance Optimization (Completed)
+
+Optimized RLS policies by wrapping `auth.uid()` in a subquery to evaluate once per query instead of once per row.
+
+```sql
+-- Drop and recreate policies for flashcard_sets
+DROP POLICY IF EXISTS "Users can manage their own flashcard_sets" ON public.flashcard_sets;
+CREATE POLICY "Users can manage their own flashcard_sets" ON public.flashcard_sets
+  FOR ALL USING (user_id = (SELECT auth.uid()));
+
+-- Drop and recreate policies for flashcards
+DROP POLICY IF EXISTS "Users can manage their own flashcards" ON public.flashcards;
+CREATE POLICY "Users can manage their own flashcards" ON public.flashcards
+  FOR ALL USING (user_id = (SELECT auth.uid()));
+
+-- Drop and recreate policies for task_lists
+DROP POLICY IF EXISTS "Users can manage their own task_lists" ON public.task_lists;
+CREATE POLICY "Users can manage their own task_lists" ON public.task_lists
+  FOR ALL USING (user_id = (SELECT auth.uid()));
+
+-- Drop and recreate policies for tasks
+DROP POLICY IF EXISTS "Users can manage their own tasks" ON public.tasks;
+CREATE POLICY "Users can manage their own tasks" ON public.tasks
+  FOR ALL USING (user_id = (SELECT auth.uid()));
+
+-- Drop and recreate policies for timer_sessions
+DROP POLICY IF EXISTS "Users can manage their own timer_sessions" ON public.timer_sessions;
+CREATE POLICY "Users can manage their own timer_sessions" ON public.timer_sessions
+  FOR ALL USING (user_id = (SELECT auth.uid()));
+
+-- Drop and recreate policies for user_stats
+DROP POLICY IF EXISTS "Users can manage their own user_stats" ON public.user_stats;
+CREATE POLICY "Users can manage their own user_stats" ON public.user_stats
+  FOR ALL USING (user_id = (SELECT auth.uid()));
+
+-- Drop and recreate policies for gallery_images
+DROP POLICY IF EXISTS "Users can manage their own gallery" ON public.gallery_images;
+CREATE POLICY "Users can manage their own gallery" ON public.gallery_images
+  FOR ALL USING (user_id = (SELECT auth.uid()));
+```

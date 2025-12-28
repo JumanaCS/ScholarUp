@@ -228,14 +228,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   questionText: {
-    fontFamily: 'Mini',
+    fontFamily: 'BPreplay-Bold',
     fontSize: isTablet ? 28 : 22,
     color: Colors.white,
     textAlign: 'center',
     marginBottom: 20,
   },
   answerText: {
-    fontFamily: 'Mini',
+    fontFamily: 'BPreplay-Bold',
     fontSize: isTablet ? 20 : 16,
     color: Colors.white,
     textAlign: 'center',

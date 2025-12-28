@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
     fontSize: isTablet ? 28 : 24,
   },
   taskText: {
-    fontFamily: 'Mini',
+    fontFamily: 'BPreplay-Bold',
     fontSize: isTablet ? 20 : 16,
     color: Colors.white,
     flex: 1,

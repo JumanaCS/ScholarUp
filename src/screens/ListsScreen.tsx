@@ -9,10 +9,16 @@ import {
   ScrollView,
   Dimensions,
   ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  Image,
+  Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Colors } from '../constants';
 import { useLists } from '../context';
+
+const whitePencil = require('../assets/images/White_pencil.png');
 
 const { width, height } = Dimensions.get('window');
 const isTablet = Math.min(width, height) >= 600;
@@ -35,11 +41,15 @@ const EMOJI_OPTIONS = ['💻', '📓', '📚', '✏️', '🎯', '🏠', '💼',
 
 export default function ListsScreen() {
   const navigation = useNavigation<any>();
-  const { lists, createList, updateListItems } = useLists();
+  const { lists, createList, updateList, deleteList, updateListItems } = useLists();
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingList, setEditingList] = useState<List | null>(null);
   const [newListName, setNewListName] = useState('');
   const [selectedEmoji, setSelectedEmoji] = useState('📓');
   const [isCreating, setIsCreating] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleCreateList = async () => {
     if (newListName.trim() && !isCreating) {
@@ -77,6 +87,51 @@ export default function ListsScreen() {
     });
   };
 
+  const handleEditList = (list: List) => {
+    setEditingList(list);
+    setNewListName(list.name);
+    setSelectedEmoji(list.emoji);
+    setShowEditModal(true);
+  };
+
+  const handleUpdateList = async () => {
+    if (editingList && newListName.trim()) {
+      setIsUpdating(true);
+      await updateList(editingList.id, newListName.trim(), selectedEmoji);
+      setIsUpdating(false);
+      resetEditModal();
+    }
+  };
+
+  const handleDeleteList = () => {
+    if (editingList) {
+      Alert.alert(
+        'Delete List',
+        'Are you sure you want to delete this list? This action cannot be undone.',
+        [
+          { text: 'Cancel', style: 'cancel' },
+          {
+            text: 'Delete',
+            style: 'destructive',
+            onPress: async () => {
+              setIsDeleting(true);
+              await deleteList(editingList.id);
+              setIsDeleting(false);
+              resetEditModal();
+            },
+          },
+        ]
+      );
+    }
+  };
+
+  const resetEditModal = () => {
+    setShowEditModal(false);
+    setEditingList(null);
+    setNewListName('');
+    setSelectedEmoji('📓');
+  };
+
   const renderListCard = (list: List) => {
     const itemCount = list.items.length;
 
@@ -95,8 +150,12 @@ export default function ListsScreen() {
               <Text style={styles.cardItemCount}>{itemCount} item{itemCount !== 1 ? 's' : ''}</Text>
             </View>
           </View>
-          <TouchableOpacity style={styles.moreButton}>
-            <Text style={styles.moreButtonText}>•••</Text>
+          <TouchableOpacity
+            style={styles.pencilButton}
+            onPress={() => handleEditList(list)}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          >
+            <Image source={whitePencil} style={styles.pencilIcon} resizeMode="contain" />
           </TouchableOpacity>
         </View>
       </TouchableOpacity>
@@ -133,68 +192,156 @@ export default function ListsScreen() {
         animationType="fade"
         onRequestClose={() => setShowCreateModal(false)}
       >
-        <TouchableOpacity
-          style={styles.modalOverlay}
-          activeOpacity={1}
-          onPress={() => setShowCreateModal(false)}
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={styles.keyboardAvoidingView}
         >
           <TouchableOpacity
-            style={styles.modalContent}
+            style={styles.modalOverlay}
             activeOpacity={1}
-            onPress={() => {}}
+            onPress={() => setShowCreateModal(false)}
           >
-            {/* Close button */}
             <TouchableOpacity
-              style={styles.closeButton}
-              onPress={() => setShowCreateModal(false)}
+              style={styles.modalContent}
+              activeOpacity={1}
+              onPress={() => {}}
             >
-              <Text style={styles.closeButtonText}>X</Text>
-            </TouchableOpacity>
+              {/* Close button */}
+              <TouchableOpacity
+                style={styles.closeButton}
+                onPress={() => setShowCreateModal(false)}
+              >
+                <Text style={styles.closeButtonText}>X</Text>
+              </TouchableOpacity>
 
-            {/* Modal title */}
-            <Text style={styles.modalTitle}>create a list</Text>
+              {/* Modal title */}
+              <Text style={styles.modalTitle}>create a list</Text>
 
-            {/* Name input */}
-            <Text style={styles.inputLabel}>enter list name:</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="enter name"
-              placeholderTextColor="#BEBEBE"
-              value={newListName}
-              onChangeText={setNewListName}
-            />
+              {/* Name input */}
+              <Text style={styles.inputLabel}>enter list name:</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="enter name"
+                placeholderTextColor="#BEBEBE"
+                value={newListName}
+                onChangeText={setNewListName}
+              />
 
-            {/* Emoji picker */}
-            <Text style={styles.inputLabelSpaced}>choose an emoji:</Text>
-            <View style={styles.emojiGrid}>
-              {EMOJI_OPTIONS.map((emoji) => (
-                <TouchableOpacity
-                  key={emoji}
-                  style={[
-                    styles.emojiButton,
-                    selectedEmoji === emoji && styles.emojiButtonSelected,
-                  ]}
-                  onPress={() => setSelectedEmoji(emoji)}
-                >
-                  <Text style={styles.emojiText}>{emoji}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
+              {/* Emoji picker */}
+              <Text style={styles.inputLabelSpaced}>choose an emoji:</Text>
+              <View style={styles.emojiGrid}>
+                {EMOJI_OPTIONS.map((emoji) => (
+                  <TouchableOpacity
+                    key={emoji}
+                    style={[
+                      styles.emojiButton,
+                      selectedEmoji === emoji && styles.emojiButtonSelected,
+                    ]}
+                    onPress={() => setSelectedEmoji(emoji)}
+                  >
+                    <Text style={styles.emojiText}>{emoji}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
 
-            {/* Create button */}
-            <TouchableOpacity
-              style={[styles.createButton, isCreating && styles.createButtonDisabled]}
-              onPress={handleCreateList}
-              disabled={isCreating}
-            >
-              {isCreating ? (
-                <ActivityIndicator color={Colors.white} />
-              ) : (
-                <Text style={styles.createButtonText}>create</Text>
-              )}
+              {/* Create button */}
+              <TouchableOpacity
+                style={[styles.createButton, isCreating && styles.createButtonDisabled]}
+                onPress={handleCreateList}
+                disabled={isCreating}
+              >
+                {isCreating ? (
+                  <ActivityIndicator color={Colors.white} />
+                ) : (
+                  <Text style={styles.createButtonText}>create</Text>
+                )}
+              </TouchableOpacity>
             </TouchableOpacity>
           </TouchableOpacity>
-        </TouchableOpacity>
+        </KeyboardAvoidingView>
+      </Modal>
+
+      {/* Edit List Modal */}
+      <Modal
+        visible={showEditModal}
+        transparent
+        animationType="fade"
+        onRequestClose={resetEditModal}
+      >
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={styles.keyboardAvoidingView}
+        >
+          <TouchableOpacity
+            style={styles.modalOverlay}
+            activeOpacity={1}
+            onPress={resetEditModal}
+          >
+            <TouchableOpacity
+              style={styles.modalContent}
+              activeOpacity={1}
+              onPress={() => {}}
+            >
+              <TouchableOpacity
+                style={styles.closeButton}
+                onPress={resetEditModal}
+              >
+                <Text style={styles.closeButtonText}>X</Text>
+              </TouchableOpacity>
+
+              <Text style={styles.modalTitle}>edit list</Text>
+
+              <Text style={styles.inputLabel}>list name:</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="enter name"
+                placeholderTextColor="#BEBEBE"
+                value={newListName}
+                onChangeText={setNewListName}
+              />
+
+              <Text style={styles.inputLabelSpaced}>choose an emoji:</Text>
+              <View style={styles.emojiGrid}>
+                {EMOJI_OPTIONS.map((emoji) => (
+                  <TouchableOpacity
+                    key={emoji}
+                    style={[
+                      styles.emojiButton,
+                      selectedEmoji === emoji && styles.emojiButtonSelected,
+                    ]}
+                    onPress={() => setSelectedEmoji(emoji)}
+                  >
+                    <Text style={styles.emojiText}>{emoji}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+
+              <TouchableOpacity
+                style={[styles.createButton, isUpdating && styles.createButtonDisabled]}
+                onPress={handleUpdateList}
+                disabled={isUpdating || isDeleting}
+              >
+                {isUpdating ? (
+                  <ActivityIndicator color={Colors.white} />
+                ) : (
+                  <Text style={styles.createButtonText}>save</Text>
+                )}
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[styles.deleteButton, isDeleting && styles.createButtonDisabled]}
+                onPress={handleDeleteList}
+                disabled={isUpdating || isDeleting}
+              >
+                {isDeleting ? (
+                  <ActivityIndicator color={Colors.white} />
+                ) : (
+                  <Text style={styles.deleteButtonText}>delete list</Text>
+                )}
+              </TouchableOpacity>
+            </TouchableOpacity>
+          </TouchableOpacity>
+        </KeyboardAvoidingView>
       </Modal>
     </View>
   );
@@ -241,7 +388,7 @@ const styles = StyleSheet.create({
     fontSize: isTablet ? 32 : 26,
   },
   cardName: {
-    fontFamily: 'Mini',
+    fontFamily: 'BPreplay-Bold',
     fontSize: isTablet ? 22 : 18,
     color: Colors.white,
     marginBottom: 8,
@@ -252,16 +399,7 @@ const styles = StyleSheet.create({
     color: Colors.white,
     opacity: 0.7,
   },
-  moreButton: {
-    padding: 5,
-  },
-  moreButtonText: {
-    fontFamily: 'Mini',
-    fontSize: isTablet ? 20 : 16,
-    color: Colors.white,
-    letterSpacing: 2,
-  },
-  newListButton: {
+    newListButton: {
     backgroundColor: Colors.lightBrown,
     borderRadius: 30,
     paddingVertical: isTablet ? 18 : 16,
@@ -271,6 +409,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Mini',
     fontSize: isTablet ? 24 : 20,
     color: Colors.white,
+  },
+  keyboardAvoidingView: {
+    flex: 1,
   },
   modalOverlay: {
     flex: 1,
@@ -323,7 +464,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     paddingVertical: 12,
     paddingHorizontal: 20,
-    fontFamily: 'Mini',
+    fontFamily: 'BPreplay-Bold',
     fontSize: isTablet ? 18 : 14,
     color: Colors.textDark,
     textAlign: 'center',
@@ -361,6 +502,27 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   createButtonText: {
+    fontFamily: 'Mini',
+    fontSize: isTablet ? 20 : 16,
+    color: Colors.white,
+  },
+  pencilButton: {
+    padding: 5,
+  },
+  pencilIcon: {
+    width: isTablet ? 24 : 20,
+    height: isTablet ? 24 : 20,
+  },
+  deleteButton: {
+    backgroundColor: '#E88B8B',
+    paddingVertical: 12,
+    paddingHorizontal: 35,
+    borderRadius: 15,
+    marginTop: 15,
+    minWidth: 100,
+    alignItems: 'center',
+  },
+  deleteButtonText: {
     fontFamily: 'Mini',
     fontSize: isTablet ? 20 : 16,
     color: Colors.white,

@@ -18,7 +18,7 @@ import {
   Keyboard,
 } from 'react-native';
 import Svg, { Line } from 'react-native-svg';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, CommonActions } from '@react-navigation/native';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { Colors } from '../constants';
 import { useAuth } from '../context';
@@ -174,7 +174,12 @@ export default function LoginScreen() {
   };
 
   const handleCreateAccount = () => {
-    navigation.navigate('SignUp');
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'SignUp' }],
+      })
+    );
   };
 
   return (
@@ -366,7 +371,7 @@ const styles = StyleSheet.create({
     maxHeight: isTablet ? 65 : 48,
     paddingHorizontal: 25,
     fontSize: isTablet ? 26 : 22,
-    fontFamily: 'Mini',
+    fontFamily: 'BPreplay-Bold',
     color: Colors.white,
   },
   placeholderText: {

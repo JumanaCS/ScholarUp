@@ -213,7 +213,7 @@ export default function SetDetailScreen({ route, navigation }: SetDetailScreenPr
                 <Text style={styles.inputLabel}>enter front of card:</Text>
                 <TextInput
                   style={styles.inputLarge}
-                  placeholder="enter term"
+                  placeholder="enter question"
                   placeholderTextColor="#BEBEBE"
                   value={newQuestion}
                   onChangeText={setNewQuestion}
@@ -223,7 +223,7 @@ export default function SetDetailScreen({ route, navigation }: SetDetailScreenPr
                 <Text style={styles.inputLabelSpaced}>enter back of card:</Text>
                 <TextInput
                   style={styles.inputLarge}
-                  placeholder="enter definition"
+                  placeholder="enter answer"
                   placeholderTextColor="#BEBEBE"
                   value={newAnswer}
                   onChangeText={setNewAnswer}
@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
     color: Colors.darkGreen,
   },
   setTitle: {
-    fontFamily: 'Mini',
+    fontFamily: 'BPreplay-Bold',
     fontSize: isTablet ? 42 : 32,
     color: Colors.textDark,
     marginBottom: 15,
@@ -371,9 +371,9 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   cardQuestion: {
-    fontFamily: 'Mini',
+    fontFamily: 'BPreplay-Bold',
     fontSize: isTablet ? 22 : 18,
-    marginBottom: 8,
+    marginBottom: 15,
   },
   learnedCheckbox: {
     width: isTablet ? 26 : 22,
@@ -403,7 +403,7 @@ const styles = StyleSheet.create({
     color: Colors.white,
   },
   cardAnswer: {
-    fontFamily: 'Mini',
+    fontFamily: 'BPreplay-Bold',
     fontSize: isTablet ? 16 : 14,
   },
   cardImage: {
@@ -481,7 +481,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     paddingVertical: 15,
     paddingHorizontal: 15,
-    fontFamily: 'Mini',
+    fontFamily: 'BPreplay-Bold',
     fontSize: isTablet ? 16 : 14,
     color: Colors.textDark,
     minHeight: isTablet ? 120 : 100,

@@ -3,6 +3,7 @@ import { useAuth } from './AuthContext';
 import {
   fetchFlashcardSets,
   createFlashcardSet as dbCreateSet,
+  updateFlashcardSet as dbUpdateSet,
   deleteFlashcardSet as dbDeleteSet,
   createFlashcard as dbCreateCard,
   updateFlashcard as dbUpdateCard,
@@ -30,6 +31,7 @@ interface FlashCardsContextType {
   loading: boolean;
   refreshSets: () => Promise<void>;
   createSet: (name: string, emoji?: string) => Promise<FlashCardSet | null>;
+  updateSet: (setId: string, name: string) => Promise<void>;
   deleteSet: (setId: string) => Promise<void>;
   addCard: (setId: string, term: string, definition: string, imageUri?: string) => Promise<FlashCard | null>;
   updateCard: (cardId: string, term: string, definition: string, imageUri?: string) => Promise<void>;
@@ -77,6 +79,15 @@ export function FlashCardsProvider({ children }: { children: ReactNode }) {
     } catch (error) {
       console.error('Error creating set:', error);
       return null;
+    }
+  };
+
+  const updateSet = async (setId: string, name: string) => {
+    try {
+      await dbUpdateSet(setId, name);
+      setSets(prev => prev.map(s => s.id === setId ? { ...s, name } : s));
+    } catch (error) {
+      console.error('Error updating set:', error);
     }
   };
 
@@ -157,6 +168,7 @@ export function FlashCardsProvider({ children }: { children: ReactNode }) {
       loading,
       refreshSets,
       createSet,
+      updateSet,
       deleteSet,
       addCard,
       updateCard,

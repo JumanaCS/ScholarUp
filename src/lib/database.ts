@@ -121,6 +121,18 @@ export async function deleteFlashcardSet(setId: string) {
   if (error) throw error;
 }
 
+export async function updateFlashcardSet(setId: string, name: string) {
+  const { data, error } = await supabase
+    .from('flashcard_sets')
+    .update({ name, updated_at: new Date().toISOString() })
+    .eq('id', setId)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+}
+
 // ============ FLASHCARDS ============
 export async function createFlashcard(
   userId: string,
@@ -223,6 +235,18 @@ export async function deleteTaskList(listId: string) {
     .eq('id', listId);
 
   if (error) throw error;
+}
+
+export async function updateTaskList(listId: string, name: string, emoji: string) {
+  const { data, error } = await supabase
+    .from('task_lists')
+    .update({ name, emoji })
+    .eq('id', listId)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
 }
 
 // ============ TASKS ============
