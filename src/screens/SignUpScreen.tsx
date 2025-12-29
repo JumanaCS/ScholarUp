@@ -497,7 +497,7 @@ const styles = StyleSheet.create({
   },
   starBottomRight: {
     position: 'absolute',
-    bottom: height * 0.15,
+    bottom: height * 0.12,
     right: width * 0.08,
     width: isTablet ? width * 0.07 : width * 0.12,
     height: isTablet ? width * 0.07 : width * 0.12,
