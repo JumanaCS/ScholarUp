@@ -253,15 +253,22 @@ This ensures:
 - [x] Eraser in doodle pop up
 
 ### Version 1.0.0 (Planned) - Feb. 2025 Release 
-- [ ] Flashcards & Lists search bar
-- [ ] Recurring Tasks (daily, weekly, monthly)
-- [ ] Spaced repetition algorithm for flashcards (anki method)
-- [ ] Import flashcards from Quizlet
-- [ ] Export Data (flashcards, stats)
-- [ ] one time $3.99 premium features payment model
-- [ ] Timer alert
+- [ ] one time $3.99 premium features payment model (unlimited stuff below)
+- [ ] Limit flashcards 3x
+- [ ] Limit Lists to 2x
+- [ ] Limit Tasks to 5x
+- [ ] Limit Timer session 5x
 
 ### Version 1.2.0 (Planned)
+- [ ] Flashcards & Lists search bar
+- [ ] Recurring Tasks (daily, weekly, monthly)
+- [ ] Export Data (flashcards, stats)
+- [ ] Import flashcards from Quizlet
+- [ ] Timer alert
+- [ ] Spaced repetition algorithm for flashcards (anki method)
+
+
+### Version 1.3.0 (Planned)
 - [ ] Web Version
 
 ### Version 2.0.0 (Future)
