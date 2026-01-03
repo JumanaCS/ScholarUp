@@ -249,19 +249,19 @@ This ensures:
 ---
 ## Roadmap & Future Updates
 
-### Version 1.0.0 (Planned) - Feb. 2025 Release  
-- [ ] one time $3.99 premium features payment model
-- [ ] Timer sound alert
-- [ ] Export Data (flashcards, stats)
+### Version BETA  
 - [x] Eraser in doodle pop up
 
-### Version 1.2.0 (Planned)
+### Version 1.0.0 (Planned) - Feb. 2025 Release 
 - [ ] Flashcards & Lists search bar
 - [ ] Recurring Tasks (daily, weekly, monthly)
 - [ ] Spaced repetition algorithm for flashcards (anki method)
 - [ ] Import flashcards from Quizlet
+- [ ] Export Data (flashcards, stats)
+- [ ] one time $3.99 premium features payment model
+- [ ] Timer alert
 
-### Version 1.3.0 (Planned)
+### Version 1.2.0 (Planned)
 - [ ] Web Version
 
 ### Version 2.0.0 (Future)
