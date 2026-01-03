@@ -87,7 +87,7 @@ export function ListsProvider({ children }: { children: ReactNode }) {
       const data = await fetchTaskLists(user.id);
       setLists((data || []).map(convertToAppFormat));
     } catch (error) {
-      console.error('Error fetching task lists:', error);
+      if (__DEV__) console.error('Error fetching task lists:', error);
     } finally {
       setLoading(false);
     }
@@ -100,23 +100,35 @@ export function ListsProvider({ children }: { children: ReactNode }) {
   const createList = async (name: string, emoji: string = '📝'): Promise<List | null> => {
     if (!user) return null;
 
+    // Security: Input validation
+    const trimmedName = name.trim();
+    if (!trimmedName || trimmedName.length === 0 || trimmedName.length > 100) {
+      return null;
+    }
+
     try {
-      const newList = await dbCreateList(user.id, name, emoji);
+      const newList = await dbCreateList(user.id, trimmedName, emoji);
       const listWithItems: List = { ...newList, items: [] };
       setLists(prev => [listWithItems, ...prev]);
       return listWithItems;
     } catch (error) {
-      console.error('Error creating list:', error);
+      if (__DEV__) console.error('Error creating list:', error);
       return null;
     }
   };
 
   const updateList = async (listId: string, name: string, emoji: string) => {
+    // Security: Input validation
+    const trimmedName = name.trim();
+    if (!trimmedName || trimmedName.length === 0 || trimmedName.length > 100) {
+      return;
+    }
+
     try {
-      await dbUpdateList(listId, name, emoji);
-      setLists(prev => prev.map(l => l.id === listId ? { ...l, name, emoji } : l));
+      await dbUpdateList(listId, trimmedName, emoji);
+      setLists(prev => prev.map(l => l.id === listId ? { ...l, name: trimmedName, emoji } : l));
     } catch (error) {
-      console.error('Error updating list:', error);
+      if (__DEV__) console.error('Error updating list:', error);
     }
   };
 
@@ -125,15 +137,21 @@ export function ListsProvider({ children }: { children: ReactNode }) {
       await dbDeleteList(listId);
       setLists(prev => prev.filter(l => l.id !== listId));
     } catch (error) {
-      console.error('Error deleting list:', error);
+      if (__DEV__) console.error('Error deleting list:', error);
     }
   };
 
   const addTask = async (listId: string, text: string, dueDate?: string): Promise<ListItem | null> => {
     if (!user) return null;
 
+    // Security: Input validation
+    const trimmedText = text.trim();
+    if (!trimmedText || trimmedText.length === 0 || trimmedText.length > 500) {
+      return null;
+    }
+
     try {
-      const newTask = await dbCreateTask(user.id, listId, text, dueDate);
+      const newTask = await dbCreateTask(user.id, listId, trimmedText, dueDate);
       const item: ListItem = {
         id: newTask.id,
         text: newTask.text,
@@ -147,12 +165,21 @@ export function ListsProvider({ children }: { children: ReactNode }) {
       ));
       return item;
     } catch (error) {
-      console.error('Error adding task:', error);
+      if (__DEV__) console.error('Error adding task:', error);
       return null;
     }
   };
 
   const updateTaskFn = async (taskId: string, updates: { text?: string; completed?: boolean; dueDate?: string }) => {
+    // Security: Input validation for text
+    if (updates.text !== undefined) {
+      const trimmedText = updates.text.trim();
+      if (!trimmedText || trimmedText.length === 0 || trimmedText.length > 500) {
+        return;
+      }
+      updates.text = trimmedText;
+    }
+
     try {
       const dbUpdates: { text?: string; completed?: boolean; due_date?: string } = {};
       if (updates.text !== undefined) dbUpdates.text = updates.text;
@@ -169,7 +196,7 @@ export function ListsProvider({ children }: { children: ReactNode }) {
         ),
       })));
     } catch (error) {
-      console.error('Error updating task:', error);
+      if (__DEV__) console.error('Error updating task:', error);
     }
   };
 
@@ -182,7 +209,7 @@ export function ListsProvider({ children }: { children: ReactNode }) {
           : list
       ));
     } catch (error) {
-      console.error('Error deleting task:', error);
+      if (__DEV__) console.error('Error deleting task:', error);
     }
   };
 

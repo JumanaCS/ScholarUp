@@ -58,7 +58,7 @@ export function FlashCardsProvider({ children }: { children: ReactNode }) {
       const data = await fetchFlashcardSets(user.id);
       setSets(data || []);
     } catch (error) {
-      console.error('Error fetching flashcard sets:', error);
+      if (__DEV__) console.error('Error fetching flashcard sets:', error);
     } finally {
       setLoading(false);
     }
@@ -71,23 +71,35 @@ export function FlashCardsProvider({ children }: { children: ReactNode }) {
   const createSet = async (name: string, emoji: string = '📚'): Promise<FlashCardSet | null> => {
     if (!user) return null;
 
+    // Security: Input validation
+    const trimmedName = name.trim();
+    if (!trimmedName || trimmedName.length === 0 || trimmedName.length > 100) {
+      return null;
+    }
+
     try {
-      const newSet = await dbCreateSet(user.id, name, emoji);
+      const newSet = await dbCreateSet(user.id, trimmedName, emoji);
       const setWithCards = { ...newSet, flashcards: [] };
       setSets(prev => [setWithCards, ...prev]);
       return setWithCards;
     } catch (error) {
-      console.error('Error creating set:', error);
+      if (__DEV__) console.error('Error creating set:', error);
       return null;
     }
   };
 
   const updateSet = async (setId: string, name: string) => {
+    // Security: Input validation
+    const trimmedName = name.trim();
+    if (!trimmedName || trimmedName.length === 0 || trimmedName.length > 100) {
+      return;
+    }
+
     try {
-      await dbUpdateSet(setId, name);
+      await dbUpdateSet(setId, trimmedName);
       setSets(prev => prev.map(s => s.id === setId ? { ...s, name } : s));
     } catch (error) {
-      console.error('Error updating set:', error);
+      if (__DEV__) console.error('Error updating set:', error);
     }
   };
 
@@ -96,15 +108,22 @@ export function FlashCardsProvider({ children }: { children: ReactNode }) {
       await dbDeleteSet(setId);
       setSets(prev => prev.filter(s => s.id !== setId));
     } catch (error) {
-      console.error('Error deleting set:', error);
+      if (__DEV__) console.error('Error deleting set:', error);
     }
   };
 
   const addCard = async (setId: string, term: string, definition: string, imageUri?: string): Promise<FlashCard | null> => {
     if (!user) return null;
 
+    // Security: Input validation
+    const trimmedTerm = term.trim();
+    const trimmedDef = definition.trim();
+    if (!trimmedTerm || trimmedTerm.length > 500 || !trimmedDef || trimmedDef.length > 2000) {
+      return null;
+    }
+
     try {
-      const newCard = await dbCreateCard(user.id, setId, term, definition, imageUri);
+      const newCard = await dbCreateCard(user.id, setId, trimmedTerm, trimmedDef, imageUri);
       setSets(prev => prev.map(set =>
         set.id === setId
           ? { ...set, flashcards: [...set.flashcards, newCard] }
@@ -112,7 +131,7 @@ export function FlashCardsProvider({ children }: { children: ReactNode }) {
       ));
       return newCard;
     } catch (error) {
-      console.error('Error adding card:', error);
+      if (__DEV__) console.error('Error adding card:', error);
       return null;
     }
   };
@@ -129,7 +148,7 @@ export function FlashCardsProvider({ children }: { children: ReactNode }) {
         ),
       })));
     } catch (error) {
-      console.error('Error updating card:', error);
+      if (__DEV__) console.error('Error updating card:', error);
     }
   };
 
@@ -145,7 +164,7 @@ export function FlashCardsProvider({ children }: { children: ReactNode }) {
         ),
       })));
     } catch (error) {
-      console.error('Error toggling card learned:', error);
+      if (__DEV__) console.error('Error toggling card learned:', error);
     }
   };
 
@@ -158,7 +177,7 @@ export function FlashCardsProvider({ children }: { children: ReactNode }) {
           : set
       ));
     } catch (error) {
-      console.error('Error deleting card:', error);
+      if (__DEV__) console.error('Error deleting card:', error);
     }
   };
 

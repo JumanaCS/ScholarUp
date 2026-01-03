@@ -130,7 +130,7 @@ export function StatsProvider({ children }: { children: ReactNode }) {
         const galleryData = await fetchGalleryImages(user.id);
         setGallery(galleryData || []);
       } catch (error) {
-        console.error('Error loading stats:', error);
+        if (__DEV__) console.error('Error loading stats:', error);
       } finally {
         setLoading(false);
         setGalleryLoading(false);
@@ -158,7 +158,7 @@ export function StatsProvider({ children }: { children: ReactNode }) {
         quizzes_passed: newStats.quizzesPassed,
       });
     } catch (error) {
-      console.error('Error syncing stats:', error);
+      if (__DEV__) console.error('Error syncing stats:', error);
     }
   };
 
@@ -248,7 +248,7 @@ export function StatsProvider({ children }: { children: ReactNode }) {
     try {
       await saveTimerSession(user.id, durationSeconds);
     } catch (error) {
-      console.error('Error saving timer session:', error);
+      if (__DEV__) console.error('Error saving timer session:', error);
     }
   };
 
@@ -259,7 +259,7 @@ export function StatsProvider({ children }: { children: ReactNode }) {
       // Upload image to Supabase Storage
       const imageUrl = await uploadImage(user.id, imageUri, 'gallery');
       if (!imageUrl) {
-        console.error('Failed to upload image');
+        if (__DEV__) console.error('Failed to upload image');
         return;
       }
 
@@ -267,7 +267,7 @@ export function StatsProvider({ children }: { children: ReactNode }) {
       const savedImage = await saveGalleryImage(user.id, imageUrl);
       setGallery(prev => [savedImage, ...prev]);
     } catch (error) {
-      console.error('Error adding to gallery:', error);
+      if (__DEV__) console.error('Error adding to gallery:', error);
     }
   };
 
@@ -276,7 +276,7 @@ export function StatsProvider({ children }: { children: ReactNode }) {
       await deleteGalleryImage(imageId, imageUrl);
       setGallery(prev => prev.filter(img => img.id !== imageId));
     } catch (error) {
-      console.error('Error removing from gallery:', error);
+      if (__DEV__) console.error('Error removing from gallery:', error);
     }
   };
 
@@ -299,7 +299,7 @@ export function StatsProvider({ children }: { children: ReactNode }) {
         }
         await upsertUserStats(user.id, dbUpdate);
       } catch (error) {
-        console.error('Error saving settings:', error);
+        if (__DEV__) console.error('Error saving settings:', error);
       }
     }
   };

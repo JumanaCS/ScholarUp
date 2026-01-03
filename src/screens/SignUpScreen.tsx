@@ -144,8 +144,20 @@ export default function SignUpScreen() {
       Alert.alert('Error', 'Please enter a password');
       return;
     }
-    if (password.length < 6) {
-      Alert.alert('Error', 'Password must be at least 6 characters');
+    if (password.length < 8) {
+      Alert.alert('Error', 'Password must be at least 8 characters');
+      return;
+    }
+    if (!/[A-Z]/.test(password)) {
+      Alert.alert('Error', 'Password must contain at least one uppercase letter');
+      return;
+    }
+    if (!/[a-z]/.test(password)) {
+      Alert.alert('Error', 'Password must contain at least one lowercase letter');
+      return;
+    }
+    if (!/[0-9]/.test(password)) {
+      Alert.alert('Error', 'Password must contain at least one number');
       return;
     }
     if (password !== confirmPassword) {
@@ -184,8 +196,8 @@ export default function SignUpScreen() {
       if (e.code === 'ERR_REQUEST_CANCELED') {
         // User canceled the sign-in
       } else {
-        // Other error
-        console.log('Apple Sign In Error:', e);
+        // Other error - only log in development
+        if (__DEV__) console.log('Apple Sign In Error:', e);
       }
     }
   };

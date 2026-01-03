@@ -167,8 +167,8 @@ export default function LoginScreen() {
       if (e.code === 'ERR_REQUEST_CANCELED') {
         // User canceled the sign-in
       } else {
-        // Other error
-        console.log('Apple Sign In Error:', e);
+        // Other error - only log in development
+        if (__DEV__) console.log('Apple Sign In Error:', e);
       }
     }
   };

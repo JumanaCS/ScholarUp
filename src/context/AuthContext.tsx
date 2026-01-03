@@ -3,6 +3,21 @@ import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
 import { Alert } from 'react-native';
 
+// Security: Map internal errors to user-friendly messages
+const getSafeErrorMessage = (error: any): string => {
+  const message = error?.message?.toLowerCase() || '';
+
+  if (message.includes('invalid login credentials')) return 'Invalid email or password';
+  if (message.includes('email not confirmed')) return 'Please verify your email before logging in';
+  if (message.includes('user already registered')) return 'An account with this email already exists';
+  if (message.includes('invalid email')) return 'Please enter a valid email address';
+  if (message.includes('password')) return 'Password does not meet requirements';
+  if (message.includes('rate limit') || message.includes('too many')) return 'Too many attempts. Please try again later';
+  if (message.includes('network') || message.includes('fetch')) return 'Network error. Please check your connection';
+
+  return 'An unexpected error occurred. Please try again';
+};
+
 interface AuthContextType {
   user: User | null;
   session: Session | null;
@@ -50,7 +65,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
 
       if (error) {
-        return { success: false, error: error.message };
+        return { success: false, error: getSafeErrorMessage(error) };
       }
 
       // Check if email confirmation is required
@@ -61,7 +76,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       return { success: true };
     } catch (error: any) {
-      return { success: false, error: error.message };
+      return { success: false, error: getSafeErrorMessage(error) };
     }
   };
 
@@ -73,12 +88,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
 
       if (error) {
-        return { success: false, error: error.message };
+        return { success: false, error: getSafeErrorMessage(error) };
       }
 
       return { success: true };
     } catch (error: any) {
-      return { success: false, error: error.message };
+      return { success: false, error: getSafeErrorMessage(error) };
     }
   };
 
@@ -136,8 +151,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       return { success: true };
     } catch (error: any) {
-      console.error('Error deleting account:', error);
-      return { success: false, error: error.message };
+      if (__DEV__) console.error('Error deleting account:', error);
+      return { success: false, error: getSafeErrorMessage(error) };
     }
   };
 
@@ -149,12 +164,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
 
       if (error) {
-        return { success: false, error: error.message };
+        return { success: false, error: getSafeErrorMessage(error) };
       }
 
       return { success: true };
     } catch (error: any) {
-      return { success: false, error: error.message };
+      return { success: false, error: getSafeErrorMessage(error) };
     }
   };
 

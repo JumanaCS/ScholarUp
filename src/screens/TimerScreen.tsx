@@ -176,6 +176,7 @@ const DrawingModal = ({
   const [paths, setPaths] = useState<string[]>([]);
   const [currentPath, setCurrentPath] = useState<string>('');
   const [selectedColor, setSelectedColor] = useState('#000000');
+  const [isErasing, setIsErasing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const viewShotRef = useRef<ViewShot>(null);
 
@@ -205,24 +206,22 @@ const DrawingModal = ({
 
   const handleTouchEnd = () => {
     if (currentPath && currentPath.startsWith('M') && !currentPath.includes('undefined')) {
-      setPaths(prev => [...prev, `${currentPath}|${selectedColor}`]);
+      // Use white color when erasing, otherwise use selected color
+      // Format: path|color|strokeWidth
+      const strokeColor = isErasing ? '#FFFFFF' : selectedColor;
+      const strokeWidth = isErasing ? 7 : 3;
+      setPaths(prev => [...prev, `${currentPath}|${strokeColor}|${strokeWidth}`]);
       setCurrentPath('');
     } else {
       setCurrentPath('');
     }
   };
 
-  const handleUndo = () => {
-    console.log('Undo clicked, paths length:', paths.length);
-    setPaths(prev => {
-      console.log('Removing last path, new length:', prev.length - 1);
-      return prev.slice(0, -1);
-    });
-  };
 
   const handleClose = () => {
     setPaths([]);
     setCurrentPath('');
+    setIsErasing(false);
     onClose();
   };
 
@@ -240,11 +239,12 @@ const DrawingModal = ({
         onSave(uri);
       }
     } catch (error) {
-      console.error('Error capturing drawing:', error);
+      if (__DEV__) console.error('Error capturing drawing:', error);
     } finally {
       setIsSaving(false);
       setPaths([]);
       setCurrentPath('');
+      setIsErasing(false);
       onClose();
     }
   };
@@ -275,9 +275,12 @@ const DrawingModal = ({
                   style={[
                     drawStyles.colorButton,
                     { backgroundColor: color },
-                    selectedColor === color && drawStyles.colorButtonSelected,
+                    selectedColor === color && !isErasing && drawStyles.colorButtonSelected,
                   ]}
-                  onPress={() => setSelectedColor(color)}
+                  onPress={() => {
+                    setSelectedColor(color);
+                    setIsErasing(false);
+                  }}
                 />
               ))}
             </View>
@@ -298,7 +301,7 @@ const DrawingModal = ({
                   viewBox={`0 0 ${canvasSize} ${canvasSize}`}
                 >
                   {paths.map((pathData, index) => {
-                    const [path, color] = pathData.split('|');
+                    const [path, color, width] = pathData.split('|');
                     // Skip invalid paths
                     if (!path || path.includes('undefined') || !path.startsWith('M')) {
                       return null;
@@ -308,7 +311,7 @@ const DrawingModal = ({
                         key={index}
                         d={path}
                         stroke={color || selectedColor}
-                        strokeWidth={3}
+                        strokeWidth={width ? parseInt(width) : 3}
                         fill="none"
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -318,8 +321,8 @@ const DrawingModal = ({
                   {currentPath && currentPath.startsWith('M') && !currentPath.includes('undefined') && (
                     <Path
                       d={currentPath}
-                      stroke={selectedColor}
-                      strokeWidth={3}
+                      stroke={isErasing ? '#FFFFFF' : selectedColor}
+                      strokeWidth={isErasing ? 7 : 3}
                       fill="none"
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -327,8 +330,14 @@ const DrawingModal = ({
                   )}
                 </Svg>
               </ViewShot>
-              <TouchableOpacity style={drawStyles.undoButton} onPress={handleUndo}>
-                <Text style={drawStyles.undoText}>↺</Text>
+              <TouchableOpacity
+                style={[drawStyles.eraserButton, isErasing && drawStyles.eraserButtonActive]}
+                onPress={() => setIsErasing(!isErasing)}
+              >
+                <View style={drawStyles.eraserIcon}>
+                  <View style={drawStyles.eraserTop} />
+                  <View style={drawStyles.eraserBottom} />
+                </View>
               </TouchableOpacity>
             </View>
           </View>
@@ -478,10 +487,6 @@ export default function TimerScreen() {
   };
 
   const handleDone = () => {
-    // Save the completed times (will implement storage later)
-    console.log('Completed Focus Time:', completedFocusTime);
-    console.log('Completed Break Time:', completedBreakTime);
-
     // Reset everything
     setTimerState('idle');
     setIsPaused(false);
@@ -960,7 +965,7 @@ const drawStyles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: '#fff',
   },
-  undoButton: {
+  eraserButton: {
     position: 'absolute',
     top: 8,
     right: 8,
@@ -973,9 +978,28 @@ const drawStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  undoText: {
-    fontSize: 22,
-    color: '#000',
+  eraserButtonActive: {
+    borderWidth: 3,
+    borderColor: '#999',
+  },
+  eraserIcon: {
+    width: 18,
+    height: 20,
+    alignItems: 'center',
+  },
+  eraserTop: {
+    width: 12,
+    height: 8,
+    backgroundColor: '#E88B8B',
+    borderTopLeftRadius: 3,
+    borderTopRightRadius: 3,
+  },
+  eraserBottom: {
+    width: 16,
+    height: 10,
+    backgroundColor: '#666',
+    borderBottomLeftRadius: 2,
+    borderBottomRightRadius: 2,
   },
   saveButton: {
     backgroundColor: '#fff',

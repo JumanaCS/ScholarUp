@@ -25,7 +25,10 @@ const CustomTabBar = ({ state, descriptors, navigation }: any) => {
   const shortSide = Math.min(width, height);
   const isTablet = shortSide >= 600;
 
-  console.log('Screen dimensions:', width, 'x', height, 'isTablet:', isTablet);
+  // Debug logging only in development
+  if (__DEV__) {
+    console.log('Screen dimensions:', width, 'x', height, 'isTablet:', isTablet);
+  }
 
   const icons: { [key: string]: any } = {
     Timer: timerIcon,

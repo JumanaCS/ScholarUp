@@ -51,6 +51,25 @@ const formatTimeMinSec = (totalSeconds: number): string => {
   return result.trim() || '0 min';
 };
 
+// Security: Properly mask email to hide user info while keeping it recognizable
+const maskEmail = (email: string | undefined | null): string => {
+  if (!email || typeof email !== 'string') return 'Not logged in';
+
+  const parts = email.split('@');
+  if (parts.length !== 2) return 'Invalid email';
+
+  const [localPart, domain] = parts;
+  if (!localPart || !domain) return 'Invalid email';
+
+  // For very short local parts, show first char + asterisks
+  if (localPart.length <= 2) {
+    return `${localPart[0]}${'*'.repeat(localPart.length)}@${domain}`;
+  }
+
+  // Show first 2 chars + asterisks for the rest
+  return `${localPart.slice(0, 2)}${'*'.repeat(localPart.length - 2)}@${domain}`;
+};
+
 // Time Picker Component
 const TimePicker = ({
   visible,
@@ -491,11 +510,6 @@ export default function StatsScreen() {
                 style={[styles.framedDrawingContainer, {
                   width: frameSize,
                   height: frameSize,
-                  shadowColor: '#000',
-                  shadowOffset: { width: 0, height: 2 },
-                  shadowOpacity: 0.15,
-                  shadowRadius: 4,
-                  elevation: 3,
                 }]}
                 onPress={() => setSelectedImage(item)}
               >
@@ -595,7 +609,7 @@ export default function StatsScreen() {
         <View style={[styles.settingRow, dynamicStyles.settingRow, { borderBottomWidth: 0 }]}>
           <Text style={[styles.settingText, dynamicStyles.settingText]}>Email</Text>
           <Text style={[styles.settingValue, dynamicStyles.settingText, { opacity: 0.7 }]} numberOfLines={1}>
-            {user?.email ? `${user.email.split('@')[0].slice(0, 2)}${'*'.repeat(Math.max(0, user.email.split('@')[0].length - 2))}@${user.email.split('@')[1]}` : 'Not logged in'}
+            {maskEmail(user?.email)}
           </Text>
         </View>
       </View>
@@ -606,7 +620,7 @@ export default function StatsScreen() {
           <Text style={[styles.settingText, dynamicStyles.settingText]}>Default Focus Time</Text>
           <Text style={[styles.settingValue, dynamicStyles.settingText]}>{formatTimeMinSec(settings.defaultFocusTime)}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.settingRow, dynamicStyles.settingRow]} onPress={() => setShowBreakPicker(true)}>
+        <TouchableOpacity style={[styles.settingRow, dynamicStyles.settingRow, { borderBottomWidth: 0 }]} onPress={() => setShowBreakPicker(true)}>
           <Text style={[styles.settingText, dynamicStyles.settingText]}>Default Break Time</Text>
           <Text style={[styles.settingValue, dynamicStyles.settingText]}>{formatTimeMinSec(settings.defaultBreakTime)}</Text>
         </TouchableOpacity>

@@ -21,7 +21,7 @@ export async function uploadImage(userId: string, imageUri: string, folder: stri
       });
 
     if (error) {
-      console.error('Upload error:', error);
+      if (__DEV__) console.error('Upload error:', error);
       return null;
     }
 
@@ -32,7 +32,7 @@ export async function uploadImage(userId: string, imageUri: string, folder: stri
 
     return urlData.publicUrl;
   } catch (error) {
-    console.error('Error uploading image:', error);
+    if (__DEV__) console.error('Error uploading image:', error);
     return null;
   }
 }
@@ -44,9 +44,16 @@ export async function deleteImage(imageUrl: string): Promise<void> {
     if (urlParts.length < 2) return;
 
     const path = urlParts[1];
+
+    // Security: Prevent path traversal attacks
+    if (path.includes('..') || path.includes('//') || !path.match(/^[a-zA-Z0-9\-_\/\.]+$/)) {
+      if (__DEV__) console.error('Invalid image path detected');
+      return;
+    }
+
     await supabase.storage.from('user-images').remove([path]);
   } catch (error) {
-    console.error('Error deleting image:', error);
+    if (__DEV__) console.error('Error deleting image:', error);
   }
 }
 
@@ -173,8 +180,18 @@ export async function updateFlashcard(
   if (updates.imageUri) {
     // Check if it's already a URL (starts with http) or a local file path
     if (updates.imageUri.startsWith('http')) {
-      // It's already an uploaded URL, keep it as is
-      updateData.image_url = updates.imageUri;
+      // Security: Only accept URLs from our Supabase storage domain
+      try {
+        const url = new URL(updates.imageUri);
+        const allowedHost = process.env.EXPO_PUBLIC_SUPABASE_URL?.replace('https://', '').replace('http://', '');
+        if (allowedHost && url.host === allowedHost) {
+          updateData.image_url = updates.imageUri;
+        } else {
+          if (__DEV__) console.error('Invalid image host - URL rejected');
+        }
+      } catch {
+        if (__DEV__) console.error('Invalid image URL format');
+      }
     } else {
       // It's a local file, upload it
       const imageUrl = await uploadImage(userId, updates.imageUri, 'flashcards');
@@ -314,7 +331,7 @@ export async function fetchUserStats(userId: string) {
     .maybeSingle();
 
   if (error) {
-    console.error('Error fetching user stats:', error);
+    if (__DEV__) console.error('Error fetching user stats:', error);
     return null;
   }
   return data;
