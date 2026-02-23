@@ -4,6 +4,12 @@
 *First Place Winner at InnovateUNO Fall 2023* 🏆
 
 </div>
+
+<div align="center">
+ 
+[Website](https://scholar-up-info.vercel.app/)
+
+</div>
  
 # 🍏 About ScholarUp
 
