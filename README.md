@@ -258,12 +258,14 @@ This ensures:
 ### Version BETA  
 - [x] Eraser in doodle pop up
 
-### Version 1.0.0 (Planned) - Feb. 2026 Release 
-- [ ] one time $3.99 premium features payment model (unlimited stuff below)
-- [ ] Limit flashcards 3x
-- [ ] Limit Lists to 2x
+### Version 1.0.0 (Planned) - April 2026 Release 
+- [ ] Monthly $4.99 premium features payment model (unlimited stuff below)
+- [ ] Limit Flashcard Set 1x
+- [ ] Limit flashcards 5x
+- [ ] Limit Lists to 1x
 - [ ] Limit Tasks to 5x
 - [ ] Limit Timer session 5x
+- [ ] No Images 
 
 ### Version 1.2.0 (Planned)
 - [ ] Flashcards & Lists search bar
