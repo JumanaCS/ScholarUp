@@ -13,11 +13,11 @@ import {
 } from 'react-native';
 import { Colors } from '../constants';
 import { useStats, useAuth } from '../context';
+import { Star, User, BookHeart, FileHeart } from 'lucide-react-native';
 
 const displayLogo = require('../assets/images/displayLogo.png');
-const frameImage = require('../assets/images/Frame.png');
 
-type TabType = 'stats' | 'gallery' | 'settings';
+type TabType = 'stats' | 'settings';
 
 const formatTime = (totalSeconds: number): string => {
   if (totalSeconds === 0) {
@@ -267,22 +267,19 @@ const pickerStyles = StyleSheet.create({
 
 export default function StatsScreen() {
   const { width, height } = useWindowDimensions();
-  const isLandscape = width > height;
   // Use the shorter dimension to detect tablet - phones have shorter side < 500
   const shortSide = Math.min(width, height);
   const isTablet = shortSide >= 600;
 
   const [activeTab, setActiveTab] = useState<TabType>('stats');
-  const { stats, settings, gallery, galleryLoading, removeFromGallery, updateSettings } = useStats();
+  const [showAccountDetail, setShowAccountDetail] = useState(false);
+  const [showPremiumDetail, setShowPremiumDetail] = useState(false);
+  const { stats, settings, updateSettings } = useStats();
   const { user, signOut, deleteAccount } = useAuth();
 
   // Time picker state
   const [showFocusPicker, setShowFocusPicker] = useState(false);
   const [showBreakPicker, setShowBreakPicker] = useState(false);
-
-  // Gallery modal state
-  const [selectedImage, setSelectedImage] = useState<{ id: string; image_url: string } | null>(null);
-  const [isDeleting, setIsDeleting] = useState(false);
 
   // Account action state
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -310,7 +307,7 @@ export default function StatsScreen() {
   const handleDeleteAccount = () => {
     Alert.alert(
       'Delete Account',
-      'Are you sure you want to delete your account? This will permanently delete all your data including flashcards, tasks, stats, and gallery images. This action cannot be undone.',
+      'Are you sure you want to delete your account? This will permanently delete all your data including flashcards, tasks, and stats. This action cannot be undone.',
       [
         { text: 'Cancel', style: 'cancel' },
         {
@@ -375,10 +372,6 @@ export default function StatsScreen() {
       fontSize: isTablet ? 24 : 17,
       paddingHorizontal: isTablet ? 0 : 10,
     },
-    galleryImage: {
-      width: isTablet ? 180 : 110,
-      height: isTablet ? 180 : 110,
-    },
     settingText: {
       fontSize: isTablet ? 18 : 15,
     },
@@ -406,7 +399,7 @@ export default function StatsScreen() {
 
   const renderTabs = () => (
     <View style={styles.tabContainer}>
-      {(['stats', 'gallery', 'settings'] as TabType[]).map((tab) => (
+      {(['stats', 'settings'] as TabType[]).map((tab) => (
         <TouchableOpacity
           key={tab}
           style={[
@@ -471,147 +464,46 @@ export default function StatsScreen() {
     </ScrollView>
   );
 
-  const renderGalleryTab = () => {
-    if (galleryLoading) {
-      return (
-        <View style={styles.emptyContainer}>
-          <ActivityIndicator size="large" color={Colors.darkGreen} />
-          <Text style={[styles.emptySubtitle, { fontSize: isTablet ? 16 : 14, marginTop: 15 }]}>Loading gallery...</Text>
-        </View>
-      );
-    }
-
-    // Calculate frame size: 2 per row on mobile portrait, 3 on tablet portrait, 3 on landscape
-    const itemsPerRow = isLandscape ? 3 : (isTablet ? 3 : 2);
-    const gapSize = isTablet ? 20 : 12;
-    const contentPadding = isTablet ? 40 : 15;
-    const availableWidth = width - (contentPadding * 2);
-    const frameSize = Math.floor((availableWidth - (gapSize * (itemsPerRow - 1))) / itemsPerRow);
-    const innerSize = Math.floor(frameSize * 0.66);
-    const topOffset = Math.floor(frameSize * 0.19);
-    const leftOffset = Math.floor(frameSize * 0.19);
-
-    return (
-      <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={[styles.scrollContent, dynamicStyles.scrollContent]}
-        showsVerticalScrollIndicator={false}
-      >
-        {gallery.length === 0 ? (
-          <View style={styles.emptyContainer}>
-            <Text style={[styles.emptyTitle, { fontSize: isTablet ? 34 : 28 }]}>no drawings yet!</Text>
-            <Text style={[styles.emptySubtitle, { fontSize: isTablet ? 16 : 14 }]}>save your break time drawings to see them here</Text>
-          </View>
-        ) : (
-          <View style={[styles.galleryGrid, { gap: gapSize }]}>
-            {gallery.map((item) => (
-              <TouchableOpacity
-                key={item.id}
-                style={[styles.framedDrawingContainer, {
-                  width: frameSize,
-                  height: frameSize,
-                }]}
-                onPress={() => setSelectedImage(item)}
-              >
-                <View style={[styles.drawingInner, {
-                  width: innerSize,
-                  height: innerSize,
-                  top: topOffset,
-                  left: leftOffset,
-                }]}>
-                  <Image
-                    source={{ uri: item.image_url }}
-                    style={{ width: innerSize, height: innerSize }}
-                    resizeMode="contain"
-                  />
-                </View>
-                <Image
-                  source={frameImage}
-                  style={[styles.frameOverlay, { width: frameSize, height: frameSize }]}
-                  resizeMode="contain"
-                />
-              </TouchableOpacity>
-            ))}
-          </View>
-        )}
-
-        {/* Image Preview Modal */}
-        <Modal visible={selectedImage !== null} transparent animationType="fade">
-          <View style={styles.modalOverlay}>
-            <View style={[styles.modalContent, { maxWidth: isTablet ? 500 : 400, padding: isTablet ? 25 : 15 }]}>
-              {selectedImage && (() => {
-                const modalFrameSize = isTablet ? 380 : 300;
-                const modalInnerSize = Math.floor(modalFrameSize * 0.66);
-                const modalTopOffset = Math.floor(modalFrameSize * 0.19);
-                const modalLeftOffset = Math.floor(modalFrameSize * 0.19);
-                return (
-                  <View style={[styles.framedDrawingContainer, { width: modalFrameSize, height: modalFrameSize }]}>
-                    <View style={[styles.drawingInner, {
-                      width: modalInnerSize,
-                      height: modalInnerSize,
-                      top: modalTopOffset,
-                      left: modalLeftOffset,
-                    }]}>
-                      <Image
-                        source={{ uri: selectedImage.image_url }}
-                        style={{ width: modalInnerSize, height: modalInnerSize }}
-                        resizeMode="contain"
-                      />
-                    </View>
-                    <Image
-                      source={frameImage}
-                      style={[styles.frameOverlay, { width: modalFrameSize, height: modalFrameSize }]}
-                      resizeMode="contain"
-                    />
-                  </View>
-                );
-              })()}
-              <View style={[styles.modalButtons, { gap: isTablet ? 20 : 15, marginTop: isTablet ? 20 : 15 }]}>
-                <TouchableOpacity
-                  style={[styles.modalCloseButton, { paddingVertical: isTablet ? 14 : 12, paddingHorizontal: isTablet ? 40 : 30 }]}
-                  onPress={() => setSelectedImage(null)}
-                >
-                  <Text style={[styles.modalCloseText, { fontSize: isTablet ? 18 : 16 }]}>Close</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[styles.modalDeleteButton, { paddingVertical: isTablet ? 14 : 12, paddingHorizontal: isTablet ? 40 : 30, opacity: isDeleting ? 0.7 : 1 }]}
-                  disabled={isDeleting}
-                  onPress={async () => {
-                    if (selectedImage) {
-                      setIsDeleting(true);
-                      await removeFromGallery(selectedImage.id, selectedImage.image_url);
-                      setIsDeleting(false);
-                      setSelectedImage(null);
-                    }
-                  }}
-                >
-                  <Text style={[styles.modalDeleteText, { fontSize: isTablet ? 18 : 16 }]}>
-                    {isDeleting ? 'Deleting...' : 'Delete'}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </Modal>
-      </ScrollView>
-    );
-  };
-
   const renderSettingsTab = () => (
     <ScrollView
       style={styles.scrollView}
       contentContainerStyle={[styles.scrollContent, dynamicStyles.scrollContent]}
       showsVerticalScrollIndicator={false}
     >
-      {/* Account Section */}
-      <Text style={[styles.sectionTitle, dynamicStyles.sectionTitle]}>Account</Text>
+      {/* Premium Section */}
+      <Text style={[styles.sectionTitle, dynamicStyles.sectionTitle]}>Premium</Text>
       <View style={[styles.settingsCard, dynamicStyles.settingsCard]}>
-        <View style={[styles.settingRow, dynamicStyles.settingRow, { borderBottomWidth: 0 }]}>
-          <Text style={[styles.settingText, dynamicStyles.settingText]}>Email</Text>
-          <Text style={[styles.settingValue, dynamicStyles.settingText, { opacity: 0.7 }]} numberOfLines={1}>
-            {maskEmail(user?.email)}
-          </Text>
-        </View>
+        <TouchableOpacity
+          style={[styles.settingRow, dynamicStyles.settingRow, { borderBottomWidth: 0 }]}
+          onPress={() => setShowPremiumDetail(true)}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={[styles.settingIcon, { backgroundColor: Colors.mediumGreen }]}>
+              <Star size={isTablet ? 16 : 14} color={Colors.white} fill={Colors.white} />
+            </View>
+            <Text style={[styles.settingText, dynamicStyles.settingText]}>Unlock Pro Features</Text>
+          </View>
+          <Text style={[styles.settingValue, dynamicStyles.settingText, { opacity: 0.5 }]}>{'>'}</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Account Section */}
+      <Text style={[styles.sectionTitle, dynamicStyles.sectionTitle, { marginTop: 25 }]}>Account</Text>
+      <View style={[styles.settingsCard, dynamicStyles.settingsCard]}>
+        <TouchableOpacity
+          style={[styles.settingRow, dynamicStyles.settingRow, { borderBottomWidth: 0 }]}
+          onPress={() => setShowAccountDetail(true)}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={[styles.settingIcon, { backgroundColor: Colors.mediumGreen }]}>
+              <View style={styles.settingIconInner}>
+                <User size={isTablet ? 14 : 12} color={Colors.mediumGreen} fill={Colors.mediumGreen} />
+              </View>
+            </View>
+            <Text style={[styles.settingText, dynamicStyles.settingText]}>Email and password</Text>
+          </View>
+          <Text style={[styles.settingValue, dynamicStyles.settingText, { opacity: 0.5 }]}>{'>'}</Text>
+        </TouchableOpacity>
       </View>
 
       <Text style={[styles.sectionTitle, dynamicStyles.sectionTitle, { marginTop: 25 }]}>Timer Defaults</Text>
@@ -653,8 +545,50 @@ export default function StatsScreen() {
         <Text style={[styles.versionText, { fontSize: isTablet ? 14 : 12, marginTop: 15, textAlign: 'center' }]}>Version 1.0.0</Text>
       </View>
 
+      {/* Legal Section */}
+      <Text style={[styles.sectionTitle, dynamicStyles.sectionTitle, { marginTop: 25 }]}>Legal</Text>
+      <View style={[styles.settingsCard, dynamicStyles.settingsCard]}>
+        <TouchableOpacity style={[styles.settingRow, dynamicStyles.settingRow]}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={[styles.settingIcon, { backgroundColor: Colors.mediumGreen }]}>
+              <BookHeart size={isTablet ? 20 : 18} color={Colors.mediumGreen} fill={Colors.white} />
+            </View>
+            <Text style={[styles.settingText, dynamicStyles.settingText]}>Privacy Policy</Text>
+          </View>
+          <Text style={[styles.settingValue, dynamicStyles.settingText, { opacity: 0.5 }]}>{'>'}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.settingRow, dynamicStyles.settingRow, { borderBottomWidth: 0 }]}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={[styles.settingIcon, { backgroundColor: Colors.mediumGreen }]}>
+              <FileHeart size={isTablet ? 20 : 18} color={Colors.mediumGreen} fill={Colors.white} />
+            </View>
+            <Text style={[styles.settingText, dynamicStyles.settingText]}>Terms of Service</Text>
+          </View>
+          <Text style={[styles.settingValue, dynamicStyles.settingText, { opacity: 0.5 }]}>{'>'}</Text>
+        </TouchableOpacity>
+      </View>
+
+    </ScrollView>
+  );
+
+  const renderAccountDetail = () => (
+    <ScrollView
+      style={styles.scrollView}
+      contentContainerStyle={[styles.scrollContent, dynamicStyles.scrollContent]}
+      showsVerticalScrollIndicator={false}
+    >
+      <Text style={[styles.sectionTitle, dynamicStyles.sectionTitle]}>Email</Text>
+      <View style={[styles.settingsCard, dynamicStyles.settingsCard]}>
+        <View style={[styles.settingRow, dynamicStyles.settingRow, { borderBottomWidth: 0 }]}>
+          <Text style={[styles.settingText, dynamicStyles.settingText]}>Email</Text>
+          <Text style={[styles.settingValue, dynamicStyles.settingText, { opacity: 0.7 }]} numberOfLines={1}>
+            {maskEmail(user?.email)}
+          </Text>
+        </View>
+      </View>
+
       <TouchableOpacity
-        style={[styles.logoutButton, { paddingVertical: isTablet ? 16 : 14 }]}
+        style={[styles.logoutButton, { paddingVertical: isTablet ? 16 : 14, marginTop: 30 }]}
         onPress={handleLogout}
         disabled={isLoggingOut}
       >
@@ -679,23 +613,57 @@ export default function StatsScreen() {
     </ScrollView>
   );
 
+  const renderPremiumDetail = () => (
+    <ScrollView
+      style={styles.scrollView}
+      contentContainerStyle={[styles.scrollContent, dynamicStyles.scrollContent]}
+      showsVerticalScrollIndicator={false}
+    >
+    </ScrollView>
+  );
+
+  const isDetailView = showAccountDetail || showPremiumDetail;
+
   const getTitle = () => {
+    if (showAccountDetail) return 'Account';
+    if (showPremiumDetail) return 'Premium';
     switch (activeTab) {
       case 'stats': return 'Stats';
-      case 'gallery': return 'Gallery';
       case 'settings': return 'Settings';
       default: return 'Stats';
     }
   };
 
+  const handleBackFromDetail = () => {
+    setShowAccountDetail(false);
+    setShowPremiumDetail(false);
+  };
+
   return (
     <View style={[styles.container, dynamicStyles.container]}>
-      <Text style={[styles.title, dynamicStyles.title]}>{getTitle()}</Text>
-      {renderTabs()}
+      <View style={styles.titleRow}>
+        {isDetailView && (
+          <TouchableOpacity
+            style={[styles.backArrow, { left: isTablet ? 40 : 15 }]}
+            onPress={handleBackFromDetail}
+          >
+            <Text style={[styles.backArrowText, { fontSize: isTablet ? 28 : 22 }]}>{'<'}</Text>
+          </TouchableOpacity>
+        )}
+        <Text style={[styles.title, dynamicStyles.title]}>{getTitle()}</Text>
+      </View>
+      {!isDetailView && renderTabs()}
 
-      {activeTab === 'stats' && renderStatsTab()}
-      {activeTab === 'gallery' && renderGalleryTab()}
-      {activeTab === 'settings' && renderSettingsTab()}
+      {showAccountDetail ? (
+        renderAccountDetail()
+      ) : showPremiumDetail ? (
+        renderPremiumDetail()
+      ) : (
+        <>
+          {activeTab === 'stats' && renderStatsTab()}
+          {activeTab === 'settings' && renderSettingsTab()}
+        </>
+      )}
     </View>
   );
 }
@@ -705,11 +673,24 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.tan,
   },
+  titleRow: {
+    position: 'relative',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20,
+  },
+  backArrow: {
+    position: 'absolute',
+    zIndex: 1,
+  },
+  backArrowText: {
+    fontFamily: 'Mini',
+    color: Colors.darkGreen,
+  },
   title: {
     fontFamily: 'Mini',
     color: Colors.darkGreen,
     textAlign: 'center',
-    marginBottom: 20,
   },
   tabContainer: {
     flexDirection: 'row',
@@ -778,107 +759,6 @@ const styles = StyleSheet.create({
     marginTop: 2,
     textAlign: 'center',
   },
-  emptyContainer: {
-    alignItems: 'center',
-    paddingTop: 80,
-  },
-  emptyTitle: {
-    fontFamily: 'Mini',
-    fontSize: 28,
-    color: Colors.lightBrown,
-    marginBottom: 10,
-  },
-  emptySubtitle: {
-    fontFamily: 'Mini',
-    fontSize: 14,
-    color: Colors.textDark,
-    opacity: 0.7,
-    textAlign: 'center',
-    paddingHorizontal: 40,
-  },
-  galleryGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 10,
-    justifyContent: 'flex-start',
-  },
-  galleryImageContainer: {
-    borderRadius: 12,
-    overflow: 'hidden',
-    backgroundColor: Colors.white,
-  },
-  galleryImage: {
-    borderRadius: 12,
-  },
-  framedDrawingContainer: {
-    position: 'relative',
-  },
-  drawingInner: {
-    position: 'absolute',
-    backgroundColor: Colors.white,
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
-  },
-  frameOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.8)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalContent: {
-    width: '90%',
-    maxWidth: 400,
-    backgroundColor: Colors.white,
-    borderRadius: 20,
-    padding: 15,
-    alignItems: 'center',
-  },
-  modalImage: {
-    width: '100%',
-    height: 300,
-    borderRadius: 12,
-  },
-  modalDrawing: {
-    width: 280,
-    height: 280,
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalButtons: {
-    flexDirection: 'row',
-    gap: 15,
-    marginTop: 15,
-  },
-  modalCloseButton: {
-    backgroundColor: Colors.mediumGreen,
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    borderRadius: 25,
-  },
-  modalCloseText: {
-    fontFamily: 'Mini',
-    fontSize: 16,
-    color: Colors.white,
-  },
-  modalDeleteButton: {
-    backgroundColor: '#E88B8B',
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    borderRadius: 25,
-  },
-  modalDeleteText: {
-    fontFamily: 'Mini',
-    fontSize: 16,
-    color: Colors.white,
-  },
   settingsCard: {
     backgroundColor: Colors.white,
     borderRadius: 16,
@@ -897,6 +777,22 @@ const styles = StyleSheet.create({
   settingText: {
     fontFamily: 'Mini',
     color: Colors.textDark,
+  },
+  settingIcon: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  settingIconInner: {
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    backgroundColor: Colors.white,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   settingValue: {
     fontFamily: 'Mini',

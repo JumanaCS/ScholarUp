@@ -110,41 +110,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Delete user data from all tables
       const userId = user.id;
 
-      // Delete gallery images (and their storage files)
-      const { data: galleryImages } = await supabase
-        .from('gallery_images')
-        .select('image_url')
-        .eq('user_id', userId);
-
-      if (galleryImages) {
-        for (const img of galleryImages) {
-          if (img.image_url) {
-            const urlParts = img.image_url.split('/user-images/');
-            if (urlParts.length >= 2) {
-              await supabase.storage.from('user-images').remove([urlParts[1]]);
-            }
-          }
-        }
-      }
-
       // Delete all user data from tables
-      await supabase.from('gallery_images').delete().eq('user_id', userId);
-      await supabase.from('timer_sessions').delete().eq('user_id', userId);
       await supabase.from('tasks').delete().eq('user_id', userId);
       await supabase.from('task_lists').delete().eq('user_id', userId);
       await supabase.from('flashcards').delete().eq('user_id', userId);
       await supabase.from('flashcard_sets').delete().eq('user_id', userId);
       await supabase.from('user_stats').delete().eq('user_id', userId);
-
-      // Delete user's storage folder
-      const { data: storageFiles } = await supabase.storage
-        .from('user-images')
-        .list(userId);
-
-      if (storageFiles && storageFiles.length > 0) {
-        const filesToDelete = storageFiles.map(file => `${userId}/${file.name}`);
-        await supabase.storage.from('user-images').remove(filesToDelete);
-      }
 
       // Sign out the user (this will trigger the auth state change)
       await supabase.auth.signOut();

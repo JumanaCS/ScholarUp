@@ -5,7 +5,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
-  Image,
 } from 'react-native';
 import { Colors } from '../constants';
 import { useStats, useFlashCards } from '../context';
@@ -17,7 +16,6 @@ interface FlashCard {
   id: string;
   question: string;
   answer: string;
-  image?: string;
   learned: boolean;
 }
 
@@ -157,15 +155,6 @@ export default function QuizScreen({ route, navigation }: QuizScreenProps) {
           {/* Question */}
           <Text style={styles.questionText}>{currentCard.question}</Text>
 
-          {/* Image (shown with question) */}
-          {currentCard.image && (
-            <Image
-              source={{ uri: currentCard.image }}
-              style={styles.cardImage}
-              resizeMode="contain"
-            />
-          )}
-
           {/* Answer (shown when tapped) */}
           {showAnswer && (
             <Text style={styles.answerText}>{currentCard.answer}</Text>
@@ -241,12 +230,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 15,
     opacity: 0.9,
-  },
-  cardImage: {
-    width: isTablet ? 200 : 150,
-    height: isTablet ? 150 : 100,
-    borderRadius: 10,
-    marginBottom: 15,
   },
   tapHint: {
     fontFamily: 'Mini',

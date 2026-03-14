@@ -265,7 +265,7 @@ const DrawingModal = ({
             <Text style={drawStyles.closeText}>✕</Text>
           </TouchableOpacity>
 
-          <Text style={drawStyles.title}>Add a drawing to your gallery!</Text>
+          <Text style={drawStyles.title}>Draw something!</Text>
 
           <View style={drawStyles.canvasRow}>
             <View style={drawStyles.colorPicker}>
@@ -497,13 +497,10 @@ export default function TimerScreen() {
     setBreakReached(false);
   };
 
-  const { addToGallery, addFocusTime, addBreakTime, incrementFocusSessions, incrementBreakSessions } = useStats();
+  const { addFocusTime, addBreakTime, incrementFocusSessions, incrementBreakSessions } = useStats();
 
-  const handleSaveDrawing = async (imageUri: string) => {
-    if (imageUri) {
-      // Upload the captured drawing image to Supabase storage
-      await addToGallery(imageUri);
-    }
+  const handleSaveDrawing = async (_imageUri: string) => {
+    // Drawing saved — no persistence for now
   };
 
   return (

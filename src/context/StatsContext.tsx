@@ -3,11 +3,6 @@ import { useAuth } from './AuthContext';
 import {
   fetchUserStats,
   upsertUserStats,
-  saveTimerSession,
-  fetchGalleryImages,
-  saveGalleryImage,
-  deleteGalleryImage,
-  uploadImage,
 } from '../lib/database';
 
 interface Stats {
@@ -30,17 +25,10 @@ interface Settings {
   soundEffects: boolean;
 }
 
-interface GalleryImage {
-  id: string;
-  image_url: string;
-}
-
 interface StatsContextType {
   stats: Stats;
   settings: Settings;
-  gallery: GalleryImage[];
   loading: boolean;
-  galleryLoading: boolean;
   addFocusTime: (seconds: number) => void;
   addBreakTime: (seconds: number) => void;
   incrementFocusSessions: () => void;
@@ -51,11 +39,7 @@ interface StatsContextType {
   incrementQuizzesPassed: () => void;
   incrementTasksCreated: (count?: number) => void;
   incrementTasksCompleted: (count?: number) => void;
-  addToGallery: (imageUri: string) => Promise<void>;
-  removeFromGallery: (imageId: string, imageUrl: string) => Promise<void>;
-  clearGallery: () => void;
   updateSettings: (newSettings: Partial<Settings>) => void;
-  saveSession: (durationSeconds: number) => Promise<void>;
 }
 
 const defaultStats: Stats = {
@@ -84,24 +68,19 @@ export function StatsProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth();
   const [stats, setStats] = useState<Stats>(defaultStats);
   const [settings, setSettings] = useState<Settings>(defaultSettings);
-  const [gallery, setGallery] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
-  const [galleryLoading, setGalleryLoading] = useState(true);
 
   // Load stats from Supabase when user logs in
   useEffect(() => {
     const loadStats = async () => {
       if (!user) {
         setStats(defaultStats);
-        setGallery([]);
         setLoading(false);
-        setGalleryLoading(false);
         return;
       }
 
       try {
         setLoading(true);
-        setGalleryLoading(true);
 
         // Load stats
         const data = await fetchUserStats(user.id);
@@ -125,15 +104,10 @@ export function StatsProvider({ children }: { children: ReactNode }) {
             defaultBreakTime: data.default_break_time || 300,
           }));
         }
-
-        // Load gallery
-        const galleryData = await fetchGalleryImages(user.id);
-        setGallery(galleryData || []);
       } catch (error) {
         if (__DEV__) console.error('Error loading stats:', error);
       } finally {
         setLoading(false);
-        setGalleryLoading(false);
       }
     };
 
@@ -242,48 +216,6 @@ export function StatsProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  const saveSession = async (durationSeconds: number) => {
-    if (!user) return;
-
-    try {
-      await saveTimerSession(user.id, durationSeconds);
-    } catch (error) {
-      if (__DEV__) console.error('Error saving timer session:', error);
-    }
-  };
-
-  const addToGallery = async (imageUri: string) => {
-    if (!user) return;
-
-    try {
-      // Upload image to Supabase Storage
-      const imageUrl = await uploadImage(user.id, imageUri, 'gallery');
-      if (!imageUrl) {
-        if (__DEV__) console.error('Failed to upload image');
-        return;
-      }
-
-      // Save to database
-      const savedImage = await saveGalleryImage(user.id, imageUrl);
-      setGallery(prev => [savedImage, ...prev]);
-    } catch (error) {
-      if (__DEV__) console.error('Error adding to gallery:', error);
-    }
-  };
-
-  const removeFromGallery = async (imageId: string, imageUrl: string) => {
-    try {
-      await deleteGalleryImage(imageId, imageUrl);
-      setGallery(prev => prev.filter(img => img.id !== imageId));
-    } catch (error) {
-      if (__DEV__) console.error('Error removing from gallery:', error);
-    }
-  };
-
-  const clearGallery = () => {
-    setGallery([]);
-  };
-
   const updateSettings = async (newSettings: Partial<Settings>) => {
     setSettings(prev => ({ ...prev, ...newSettings }));
 
@@ -308,9 +240,7 @@ export function StatsProvider({ children }: { children: ReactNode }) {
     <StatsContext.Provider value={{
       stats,
       settings,
-      gallery,
       loading,
-      galleryLoading,
       addFocusTime,
       addBreakTime,
       incrementFocusSessions,
@@ -321,11 +251,7 @@ export function StatsProvider({ children }: { children: ReactNode }) {
       incrementQuizzesPassed,
       incrementTasksCreated,
       incrementTasksCompleted,
-      addToGallery,
-      removeFromGallery,
-      clearGallery,
       updateSettings,
-      saveSession,
     }}>
       {children}
     </StatsContext.Provider>

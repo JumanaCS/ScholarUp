@@ -13,7 +13,6 @@ import {
   Platform,
   ActivityIndicator,
 } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
 import { Colors } from '../constants';
 import { useStats, useFlashCards } from '../context';
 
@@ -44,15 +43,13 @@ export default function SetDetailScreen({ route, navigation }: SetDetailScreenPr
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newQuestion, setNewQuestion] = useState('');
   const [newAnswer, setNewAnswer] = useState('');
-  const [newImage, setNewImage] = useState<string | undefined>(undefined);
   const [editingCard, setEditingCard] = useState<any>(null);
-  const [fullscreenImage, setFullscreenImage] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
   const handleCreateCard = async () => {
     if (newQuestion.trim() && newAnswer.trim()) {
       setIsSaving(true);
-      await addCard(setId, newQuestion.trim(), newAnswer.trim(), newImage);
+      await addCard(setId, newQuestion.trim(), newAnswer.trim());
       incrementCardsCreated();
       setIsSaving(false);
       resetModal();
@@ -62,7 +59,7 @@ export default function SetDetailScreen({ route, navigation }: SetDetailScreenPr
   const handleUpdateCard = async () => {
     if (editingCard && newQuestion.trim() && newAnswer.trim()) {
       setIsSaving(true);
-      await updateCard(editingCard.id, newQuestion.trim(), newAnswer.trim(), newImage);
+      await updateCard(editingCard.id, newQuestion.trim(), newAnswer.trim());
       setIsSaving(false);
       resetModal();
     }
@@ -71,7 +68,6 @@ export default function SetDetailScreen({ route, navigation }: SetDetailScreenPr
   const resetModal = () => {
     setNewQuestion('');
     setNewAnswer('');
-    setNewImage(undefined);
     setEditingCard(null);
     setShowCreateModal(false);
   };
@@ -80,20 +76,7 @@ export default function SetDetailScreen({ route, navigation }: SetDetailScreenPr
     setEditingCard(card);
     setNewQuestion(card.term);
     setNewAnswer(card.definition);
-    setNewImage(card.image_url || undefined);
     setShowCreateModal(true);
-  };
-
-  const pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      quality: 0.8,
-    });
-
-    if (!result.canceled) {
-      setNewImage(result.assets[0].uri);
-    }
   };
 
   const handleToggleLearned = async (card: any) => {
@@ -114,15 +97,6 @@ export default function SetDetailScreen({ route, navigation }: SetDetailScreenPr
             <Text style={[styles.cardQuestion, { color: textColor }]}>{card.term}</Text>
             <Text style={[styles.cardAnswer, { color: textColor }]}>{card.definition}</Text>
           </View>
-          {card.image_url && (
-            <TouchableOpacity onPress={() => setFullscreenImage(card.image_url)}>
-              <Image
-                source={{ uri: card.image_url }}
-                style={styles.cardImage}
-                resizeMode="cover"
-              />
-            </TouchableOpacity>
-          )}
         </View>
         <View style={styles.cardBottom}>
           <TouchableOpacity onPress={() => handleEditCard(card)}>
@@ -230,20 +204,6 @@ export default function SetDetailScreen({ route, navigation }: SetDetailScreenPr
                   multiline
                 />
 
-                <Text style={styles.inputLabelSpaced}>add image (optional):</Text>
-                <TouchableOpacity style={styles.imagePickerButton} onPress={pickImage}>
-                  {newImage ? (
-                    <Image source={{ uri: newImage }} style={styles.previewImage} resizeMode="cover" />
-                  ) : (
-                    <Text style={styles.imagePickerText}>+ tap to add image</Text>
-                  )}
-                </TouchableOpacity>
-                {newImage && (
-                  <TouchableOpacity style={styles.removeImageButton} onPress={() => setNewImage(undefined)}>
-                    <Text style={styles.removeImageText}>remove image</Text>
-                  </TouchableOpacity>
-                )}
-
                 <TouchableOpacity
                   style={[styles.saveButton, isSaving && styles.saveButtonDisabled]}
                   onPress={editingCard ? handleUpdateCard : handleCreateCard}
@@ -261,26 +221,6 @@ export default function SetDetailScreen({ route, navigation }: SetDetailScreenPr
         </KeyboardAvoidingView>
       </Modal>
 
-      <Modal
-        visible={fullscreenImage !== null}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setFullscreenImage(null)}
-      >
-        <TouchableOpacity
-          style={styles.fullscreenOverlay}
-          activeOpacity={1}
-          onPress={() => setFullscreenImage(null)}
-        >
-          {fullscreenImage && (
-            <Image
-              source={{ uri: fullscreenImage }}
-              style={styles.fullscreenImage}
-              resizeMode="contain"
-            />
-          )}
-        </TouchableOpacity>
-      </Modal>
     </View>
   );
 }
@@ -406,11 +346,6 @@ const styles = StyleSheet.create({
     fontFamily: 'BPreplay-Bold',
     fontSize: isTablet ? 16 : 14,
   },
-  cardImage: {
-    width: isTablet ? 100 : 80,
-    height: isTablet ? 100 : 80,
-    borderRadius: 10,
-  },
   cardBottom: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -502,45 +437,5 @@ const styles = StyleSheet.create({
     fontFamily: 'Mini',
     fontSize: isTablet ? 20 : 16,
     color: Colors.white,
-  },
-  imagePickerButton: {
-    backgroundColor: Colors.white,
-    borderRadius: 15,
-    height: isTablet ? 150 : 120,
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
-  },
-  imagePickerText: {
-    fontFamily: 'Mini',
-    fontSize: isTablet ? 16 : 14,
-    color: '#BEBEBE',
-  },
-  previewImage: {
-    width: '100%',
-    height: '100%',
-  },
-  removeImageButton: {
-    alignSelf: 'center',
-    marginTop: 10,
-    backgroundColor: '#E88B8B',
-    paddingVertical: 8,
-    paddingHorizontal: 20,
-    borderRadius: 20,
-  },
-  removeImageText: {
-    fontFamily: 'Mini',
-    fontSize: isTablet ? 14 : 12,
-    color: Colors.white,
-  },
-  fullscreenOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  fullscreenImage: {
-    width: '90%',
-    height: '80%',
   },
 });

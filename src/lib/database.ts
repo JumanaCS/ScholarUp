@@ -1,97 +1,4 @@
 import { supabase } from './supabase';
-import * as FileSystem from 'expo-file-system/legacy';
-import { decode } from 'base64-arraybuffer';
-
-// ============ IMAGE UPLOAD ============
-export async function uploadImage(userId: string, imageUri: string, folder: string = 'general'): Promise<string | null> {
-  try {
-    const fileName = `${userId}/${folder}/${Date.now()}.jpg`;
-
-    // Read the file as base64
-    const base64 = await FileSystem.readAsStringAsync(imageUri, {
-      encoding: FileSystem.EncodingType.Base64,
-    });
-
-    // Upload to Supabase Storage
-    const { data, error } = await supabase.storage
-      .from('user-images')
-      .upload(fileName, decode(base64), {
-        contentType: 'image/jpeg',
-        upsert: false,
-      });
-
-    if (error) {
-      if (__DEV__) console.error('Upload error:', error);
-      return null;
-    }
-
-    // Get public URL
-    const { data: urlData } = supabase.storage
-      .from('user-images')
-      .getPublicUrl(fileName);
-
-    return urlData.publicUrl;
-  } catch (error) {
-    if (__DEV__) console.error('Error uploading image:', error);
-    return null;
-  }
-}
-
-export async function deleteImage(imageUrl: string): Promise<void> {
-  try {
-    // Extract path from URL
-    const urlParts = imageUrl.split('/user-images/');
-    if (urlParts.length < 2) return;
-
-    const path = urlParts[1];
-
-    // Security: Prevent path traversal attacks
-    if (path.includes('..') || path.includes('//') || !path.match(/^[a-zA-Z0-9\-_\/\.]+$/)) {
-      if (__DEV__) console.error('Invalid image path detected');
-      return;
-    }
-
-    await supabase.storage.from('user-images').remove([path]);
-  } catch (error) {
-    if (__DEV__) console.error('Error deleting image:', error);
-  }
-}
-
-// ============ GALLERY ============
-export async function fetchGalleryImages(userId: string) {
-  const { data, error } = await supabase
-    .from('gallery_images')
-    .select('*')
-    .eq('user_id', userId)
-    .order('created_at', { ascending: false });
-
-  if (error) throw error;
-  return data;
-}
-
-export async function saveGalleryImage(userId: string, imageUrl: string) {
-  const { data, error } = await supabase
-    .from('gallery_images')
-    .insert({ user_id: userId, image_url: imageUrl })
-    .select()
-    .single();
-
-  if (error) throw error;
-  return data;
-}
-
-export async function deleteGalleryImage(imageId: string, imageUrl: string) {
-  // Delete from storage
-  await deleteImage(imageUrl);
-
-  // Delete from database
-  const { error } = await supabase
-    .from('gallery_images')
-    .delete()
-    .eq('id', imageId);
-
-  if (error) throw error;
-}
 
 // ============ FLASHCARD SETS ============
 export async function fetchFlashcardSets(userId: string) {
@@ -145,19 +52,11 @@ export async function createFlashcard(
   userId: string,
   setId: string,
   term: string,
-  definition: string,
-  imageUri?: string
+  definition: string
 ) {
-  let imageUrl: string | null = null;
-
-  // Upload image if provided
-  if (imageUri) {
-    imageUrl = await uploadImage(userId, imageUri, 'flashcards');
-  }
-
   const { data, error } = await supabase
     .from('flashcards')
-    .insert({ user_id: userId, set_id: setId, term, definition, image_url: imageUrl })
+    .insert({ user_id: userId, set_id: setId, term, definition })
     .select()
     .single();
 
@@ -168,36 +67,13 @@ export async function createFlashcard(
 export async function updateFlashcard(
   userId: string,
   cardId: string,
-  updates: { term?: string; definition?: string; imageUri?: string; learned?: boolean }
+  updates: { term?: string; definition?: string; learned?: boolean }
 ) {
-  const updateData: { term?: string; definition?: string; image_url?: string; learned?: boolean } = {};
+  const updateData: { term?: string; definition?: string; learned?: boolean } = {};
 
   if (updates.term !== undefined) updateData.term = updates.term;
   if (updates.definition !== undefined) updateData.definition = updates.definition;
   if (updates.learned !== undefined) updateData.learned = updates.learned;
-
-  // Upload new image if provided (only if it's a local file, not an existing URL)
-  if (updates.imageUri) {
-    // Check if it's already a URL (starts with http) or a local file path
-    if (updates.imageUri.startsWith('http')) {
-      // Security: Only accept URLs from our Supabase storage domain
-      try {
-        const url = new URL(updates.imageUri);
-        const allowedHost = process.env.EXPO_PUBLIC_SUPABASE_URL?.replace('https://', '').replace('http://', '');
-        if (allowedHost && url.host === allowedHost) {
-          updateData.image_url = updates.imageUri;
-        } else {
-          if (__DEV__) console.error('Invalid image host - URL rejected');
-        }
-      } catch {
-        if (__DEV__) console.error('Invalid image URL format');
-      }
-    } else {
-      // It's a local file, upload it
-      const imageUrl = await uploadImage(userId, updates.imageUri, 'flashcards');
-      if (imageUrl) updateData.image_url = imageUrl;
-    }
-  }
 
   const { data, error } = await supabase
     .from('flashcards')
@@ -297,29 +173,6 @@ export async function deleteTask(taskId: string) {
     .eq('id', taskId);
 
   if (error) throw error;
-}
-
-// ============ TIMER SESSIONS ============
-export async function saveTimerSession(userId: string, durationSeconds: number) {
-  const { data, error } = await supabase
-    .from('timer_sessions')
-    .insert({ user_id: userId, duration_seconds: durationSeconds })
-    .select()
-    .single();
-
-  if (error) throw error;
-  return data;
-}
-
-export async function fetchTimerSessions(userId: string) {
-  const { data, error } = await supabase
-    .from('timer_sessions')
-    .select('*')
-    .eq('user_id', userId)
-    .order('created_at', { ascending: false });
-
-  if (error) throw error;
-  return data;
 }
 
 // ============ USER STATS ============

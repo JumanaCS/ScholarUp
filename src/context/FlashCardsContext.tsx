@@ -15,7 +15,6 @@ interface FlashCard {
   term: string;
   definition: string;
   set_id: string;
-  image_url?: string | null;
   learned?: boolean;
 }
 
@@ -33,8 +32,8 @@ interface FlashCardsContextType {
   createSet: (name: string, emoji?: string) => Promise<FlashCardSet | null>;
   updateSet: (setId: string, name: string) => Promise<void>;
   deleteSet: (setId: string) => Promise<void>;
-  addCard: (setId: string, term: string, definition: string, imageUri?: string) => Promise<FlashCard | null>;
-  updateCard: (cardId: string, term: string, definition: string, imageUri?: string) => Promise<void>;
+  addCard: (setId: string, term: string, definition: string) => Promise<FlashCard | null>;
+  updateCard: (cardId: string, term: string, definition: string) => Promise<void>;
   toggleCardLearned: (setId: string, cardId: string, learned: boolean) => Promise<void>;
   deleteCard: (setId: string, cardId: string) => Promise<void>;
 }
@@ -112,7 +111,7 @@ export function FlashCardsProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const addCard = async (setId: string, term: string, definition: string, imageUri?: string): Promise<FlashCard | null> => {
+  const addCard = async (setId: string, term: string, definition: string): Promise<FlashCard | null> => {
     if (!user) return null;
 
     // Security: Input validation
@@ -123,7 +122,7 @@ export function FlashCardsProvider({ children }: { children: ReactNode }) {
     }
 
     try {
-      const newCard = await dbCreateCard(user.id, setId, trimmedTerm, trimmedDef, imageUri);
+      const newCard = await dbCreateCard(user.id, setId, trimmedTerm, trimmedDef);
       setSets(prev => prev.map(set =>
         set.id === setId
           ? { ...set, flashcards: [...set.flashcards, newCard] }
@@ -136,15 +135,15 @@ export function FlashCardsProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const updateCard = async (cardId: string, term: string, definition: string, imageUri?: string) => {
+  const updateCard = async (cardId: string, term: string, definition: string) => {
     if (!user) return;
 
     try {
-      const updatedCard = await dbUpdateCard(user.id, cardId, { term, definition, imageUri });
+      await dbUpdateCard(user.id, cardId, { term, definition });
       setSets(prev => prev.map(set => ({
         ...set,
         flashcards: set.flashcards.map(card =>
-          card.id === cardId ? { ...card, term, definition, image_url: updatedCard.image_url } : card
+          card.id === cardId ? { ...card, term, definition } : card
         ),
       })));
     } catch (error) {

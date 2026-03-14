@@ -99,50 +99,6 @@ CREATE POLICY "Users can manage their own user_stats" ON user_stats
 
 ---
 
-## Storage Policies (Completed)
-
-```sql
-CREATE POLICY "Users can upload their own images"
-ON storage.objects FOR INSERT
-WITH CHECK (bucket_id = 'user-images' AND auth.uid()::text = (storage.foldername(name))[1]);
-
-CREATE POLICY "Users can view their own images"
-ON storage.objects FOR SELECT
-USING (bucket_id = 'user-images' AND auth.uid()::text = (storage.foldername(name))[1]);
-
-CREATE POLICY "Users can delete their own images"
-ON storage.objects FOR DELETE
-USING (bucket_id = 'user-images' AND auth.uid()::text = (storage.foldername(name))[1]);
-```
-
----
-
-## Gallery Images Table (Completed)
-
-```sql
-CREATE TABLE gallery_images (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
-  image_url TEXT NOT NULL,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
-
-ALTER TABLE gallery_images ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "Users can manage their own gallery" ON gallery_images
-  FOR ALL USING (auth.uid() = user_id);
-```
-
----
-
-## Flashcard Image Support (Completed)
-
-```sql
-ALTER TABLE flashcards ADD COLUMN image_url TEXT;
-```
-
----
-
 ## Timer Stats Columns (Completed)
 
 ```sql
@@ -215,8 +171,26 @@ DROP POLICY IF EXISTS "Users can manage their own user_stats" ON public.user_sta
 CREATE POLICY "Users can manage their own user_stats" ON public.user_stats
   FOR ALL USING (user_id = (SELECT auth.uid()));
 
--- Drop and recreate policies for gallery_images
+```
+
+---
+
+## Remove Gallery, Image Storage & Flashcard image_url (Completed)
+
+Removed gallery feature, image storage, and unused flashcard image column.
+
+```sql
+-- Drop gallery_images table (already deleted)
 DROP POLICY IF EXISTS "Users can manage their own gallery" ON public.gallery_images;
-CREATE POLICY "Users can manage their own gallery" ON public.gallery_images
-  FOR ALL USING (user_id = (SELECT auth.uid()));
+DROP TABLE IF EXISTS public.gallery_images;
+
+-- Drop image_url column from flashcards
+ALTER TABLE public.flashcards DROP COLUMN IF EXISTS image_url;
+
+-- Drop storage policies for user-images bucket
+DROP POLICY IF EXISTS "Users can upload their own images" ON storage.objects;
+DROP POLICY IF EXISTS "Users can view their own images" ON storage.objects;
+DROP POLICY IF EXISTS "Users can delete their own images" ON storage.objects;
+
+-- user-images storage bucket deleted via Supabase Dashboard
 ```
