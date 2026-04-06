@@ -12,7 +12,7 @@
 </div>
  
 # 🍏 About ScholarUp
-
+ 
 ScholarUp is a **study companion** designed with students in mind. Born from the frustration of juggling multiple apps for studying, planning, and staying motivated, ScholarUp brings everything together in one beautifully cohesive experience.
 
 ### The Problem
